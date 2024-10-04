@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import PacketForm from "./PacketForm";
 
 const ShowProduct = ({ products }) => {
   // Check if products is undefined or null
@@ -77,33 +78,42 @@ const ShowProduct = ({ products }) => {
           {/* Packets Table */}
           <h3 className="text-lg font-bold mt-6 mb-2">Packets</h3>
           {product.packets && product.packets.length > 0 ? (
-            <table className="table-auto mb-6">
+            <table className="table-auto mb-2">
               <thead>
                 <tr>
                   <th className="px-2 py-2">Batch Number</th>
-                  <th className="px-2 py-2">Serial Number</th>
+                  <th className="px-2 py-2">Quantity</th>
                   <th className="px-2 py-2">Manufacture Date</th>
                   <th className="px-2 py-2">Expiration Date</th>
+                  <th className="px-2 py-2">Code</th>
                 </tr>
               </thead>
               <tbody>
                 {product.packets.map((packet, index) => (
                   <tr key={index} className="bg-white">
                     <td className="border px-2 py-2">{packet.batchNumber}</td>
-                    <td className="border px-2 py-2">{packet.serialNumber}</td>
+                    <td className="border px-2 py-2">{packet.quantity}</td>
                     <td className="border px-2 py-2">
-                      {packet.manufactureDate
-                        ? new Date(
-                            packet.manufactureDate * 1000
-                          ).toLocaleDateString()
-                        : "N/A"}
+                      {packet.manufactureDate}
                     </td>
                     <td className="border px-2 py-2">
-                      {packet.expirationDate
-                        ? new Date(
-                            packet.expirationDate * 1000
-                          ).toLocaleDateString()
-                        : "N/A"}
+                      {packet.expirationDate}
+                    </td>
+                    <td className="border px-2 py-2 bg-blue-500">
+                      <button
+                        type="submit"
+                        onClick={(event) => {
+                          {
+                          }
+                        }}
+                        classname="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                      >
+                        <i
+                          className="fa fa-address-book-o"
+                          aria-hidden="true"
+                        />
+                        Generate Codes
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -130,15 +140,7 @@ const ShowProduct = ({ products }) => {
             )}
           </div>
 
-          {/* Edit Product Link */}
-          <div className="mt-6 mb-6">
-            <Link
-              href={`/edit-product/${product.id}`} // Link to edit page using product ID
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Edit Product
-            </Link>
-          </div>
+          <PacketForm product={products} />
           <br />
           <br />
         </div>

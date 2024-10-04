@@ -21,15 +21,15 @@ const showProducts = () => {
       packets: [
         {
           batchNumber: "BN12345",
-          serialNumber: "SN12345",
-          // manufactureDate: Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60, // 30 days ago
-          // expirationDate: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year from now
+          quantity: 10,
+          manufactureDate: "10-04-2024",
+          expirationDate: "03-01-2026",
         },
         {
           batchNumber: "BN67890",
-          serialNumber: "SN67890",
-          // manufactureDate: Math.floor(Date.now() / 1000) - 60 * 24 * 60 * 60, // 60 days ago
-          // expirationDate: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year from now
+          quantity: 15,
+          manufactureDate: "10-04-2024",
+          expirationDate: "03-01-2026",
         },
       ],
       isApproved: true,
@@ -53,15 +53,15 @@ const showProducts = () => {
       packets: [
         {
           batchNumber: "BN12345",
-          serialNumber: "SN12345",
-          // manufactureDate: Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60, // 30 days ago
-          // expirationDate: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year from now
+          quantity: 20,
+          manufactureDate: "10-04-2024",
+          expirationDate: "03-01-2026",
         },
         {
           batchNumber: "BN67890",
-          serialNumber: "SN67890",
-          // manufactureDate: Math.floor(Date.now() / 1000) - 60 * 24 * 60 * 60, // 60 days ago
-          // expirationDate: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year from now
+          quantity: 20,
+          manufactureDate: "10-04-2024",
+          expirationDate: "03-01-2026",
         },
       ],
       isApproved: true,

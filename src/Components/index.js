@@ -11,7 +11,7 @@ import Kyc from "./Kyc";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import ShowProduct from "./ShowProduct";
-
+import PacketForm from "./PacketForm";
 import SideBar from "./SideBar";
 
 // import Brand from "./Brand";
@@ -49,6 +49,7 @@ export {
   EditProduct,
   ShowProduct,
   SideBar,
+  PacketForm,
   //   Brand,
   //   Faq,
   //   Features,
