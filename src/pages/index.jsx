@@ -119,17 +119,7 @@ const index = () => {
         )}
         {loader && <Loader />}
 
-        <Header
-          account={account}
-          CONNECT_WALLET={CONNECT_WALLET}
-          setAccount={setAccount}
-          setLoader={setLoader}
-          setOwnerModel={setOwnerModel}
-          // shortenAddress={shortenAddress}
-          // detail={detail}
-          // currency={currency}
-          ownerModel={ownerModel}
-        />
+        <Header/>
         {/* <Profile /> */}
         {/* <SideBar setOwnerModel={setOwnerModel} ownerModel={ownerModel} /> */}
         <Hero />

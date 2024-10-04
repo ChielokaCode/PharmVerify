@@ -7,15 +7,16 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
+import Link from "next/link";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
-  { name: "Home", href: "#home", current: true },
-  { name: "About", href: "#about", current: false },
-  { name: "Team", href: "#team", current: false },
-  { name: "Pricing", href: "#pricing", current: false },
-  { name: "Contact", href: "#contact", current: false },
+  { name: "Home", href: "/#home", current: true },
+  { name: "About", href: "/#about", current: false },
+  { name: "Team", href: "/#team", current: false },
+  { name: "Pricing", href: "/#pricing", current: false },
+  { name: "Contact", href: "/#contact", current: false },
 ];
 
 function classNames(...classes) {
@@ -52,7 +53,7 @@ export default function Header() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     aria-current={item.current ? "page" : undefined}
@@ -64,7 +65,7 @@ export default function Header() {
                     )}
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

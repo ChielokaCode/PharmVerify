@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -21,37 +22,28 @@ const Hero = () => {
         <div className="text-center lg:text-left lg:w-1/2 flex flex-col justify-center px-6 lg:px-0">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Introducing the future of Authentic drugs.{" "}
-              {/* <a href="#" className="font-semibold text-indigo-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a> */}
+              Introducing the future of Authentic Pharmaceutical products.{" "}
             </div>
           </div>
           <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Ensure Drug Authenticity with Our dApp
+            Ensure Pharmaceutical products Authenticity with Our dApp
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Combat the threat of counterfeit drugs in the market. Our
             decentralized application empowers consumers to verify the
-            authenticity of medications with a simple 8-digit code. Each drug
-            packet is uniquely coded, ensuring transparency and trust in
-            pharmaceutical products.
+            authenticity of medications with a simple 8-digit code. Each
+            Pharmaceutical product packet is uniquely coded, ensuring
+            transparency and trust in pharmaceutical products.
           </p>
 
           <div className="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
-            <a
-              href="#"
+            <Link
+              href="register"
+              passHref
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Get started
-            </a>
-            {/* <a
-              href="#"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Learn more <span aria-hidden="true">→</span>
-            </a> */}
+            </Link>
           </div>
         </div>
 

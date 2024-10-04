@@ -7,6 +7,8 @@ import Team from "./Team";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import Pricing from "./Pricing";
+import Kyc from "./Kyc";
+
 // import Brand from "./Brand";
 // import Faq from "./Faq";
 // import Features from "./Features";
@@ -37,6 +39,7 @@ export {
   Contact,
   Pricing,
   Footer,
+  Kyc,
   //   Brand,
   //   Faq,
   //   Features,

@@ -36,7 +36,7 @@ const people = [
 
 const Team = () => {
   return (
-    <div id="team" className="py-14 sm:py-32">
+    <div id="team" className="py-14 sm:py-32 px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
         <div className="max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
