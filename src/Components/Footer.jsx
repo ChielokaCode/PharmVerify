@@ -2,11 +2,14 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="bg-white dark:bg-gray-900 z-50">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="https://flowbite.com/" className="flex items-center">
+            <a
+              href="https://pharmverify.vercel.app/"
+              className="flex items-center"
+            >
               <img
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8 me-3"
@@ -64,7 +67,10 @@ const Footer = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2024{" "}
-            <a href="https://flowbite.com/" className="hover:underline">
+            <a
+              href="https://pharmverify.vercel.app/"
+              className="hover:underline"
+            >
               PharmVerify™
             </a>
             . All Rights Reserved.

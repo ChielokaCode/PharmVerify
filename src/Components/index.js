@@ -8,6 +8,11 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import Pricing from "./Pricing";
 import Kyc from "./Kyc";
+import AddProduct from "./AddProduct";
+import EditProduct from "./EditProduct";
+import ShowProduct from "./ShowProduct";
+
+import SideBar from "./SideBar";
 
 // import Brand from "./Brand";
 // import Faq from "./Faq";
@@ -40,6 +45,10 @@ export {
   Pricing,
   Footer,
   Kyc,
+  AddProduct,
+  EditProduct,
+  ShowProduct,
+  SideBar,
   //   Brand,
   //   Faq,
   //   Features,
