@@ -15,7 +15,7 @@ const ShowProduct = ({ products }) => {
         <div key={product.id} className="mb-6">
           <strong className="text-2xl font-bold">{product.id}</strong>
           {/* Product Details Table */}
-          <table className="table-auto w-full mb-6">
+          <table className="table-auto mb-6 bg-white">
             <thead>
               <tr>
                 <th className="px-4 py-2">Field</th>
@@ -77,28 +77,28 @@ const ShowProduct = ({ products }) => {
           {/* Packets Table */}
           <h3 className="text-lg font-bold mt-6 mb-2">Packets</h3>
           {product.packets && product.packets.length > 0 ? (
-            <table className="table-auto w-full mb-6">
+            <table className="table-auto mb-6">
               <thead>
                 <tr>
-                  <th className="px-4 py-2">Batch Number</th>
-                  <th className="px-4 py-2">Serial Number</th>
-                  <th className="px-4 py-2">Manufacture Date</th>
-                  <th className="px-4 py-2">Expiration Date</th>
+                  <th className="px-2 py-2">Batch Number</th>
+                  <th className="px-2 py-2">Serial Number</th>
+                  <th className="px-2 py-2">Manufacture Date</th>
+                  <th className="px-2 py-2">Expiration Date</th>
                 </tr>
               </thead>
               <tbody>
                 {product.packets.map((packet, index) => (
                   <tr key={index} className="bg-white">
-                    <td className="border px-4 py-2">{packet.batchNumber}</td>
-                    <td className="border px-4 py-2">{packet.serialNumber}</td>
-                    <td className="border px-4 py-2">
+                    <td className="border px-2 py-2">{packet.batchNumber}</td>
+                    <td className="border px-2 py-2">{packet.serialNumber}</td>
+                    <td className="border px-2 py-2">
                       {packet.manufactureDate
                         ? new Date(
                             packet.manufactureDate * 1000
                           ).toLocaleDateString()
                         : "N/A"}
                     </td>
-                    <td className="border px-4 py-2">
+                    <td className="border px-2 py-2">
                       {packet.expirationDate
                         ? new Date(
                             packet.expirationDate * 1000
