@@ -41,7 +41,10 @@ function classNames(...classes) {
 
 const Pricing = () => {
   return (
-    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div
+      id="pricing"
+      className="relative isolate bg-white px-6 py-14 sm:py-12 lg:px-8"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"

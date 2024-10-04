@@ -11,10 +11,11 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
-  { name: "Home", href: "#", current: true },
-  { name: "About", href: "#", current: false },
-  { name: "Team", href: "#", current: false },
-  { name: "Contact", href: "#", current: false },
+  { name: "Home", href: "#home", current: true },
+  { name: "About", href: "#about", current: false },
+  { name: "Team", href: "#team", current: false },
+  { name: "Pricing", href: "#pricing", current: false },
+  { name: "Contact", href: "#contact", current: false },
 ];
 
 function classNames(...classes) {

@@ -8,7 +8,7 @@ const Contact = () => {
   const [agreed, setAgreed] = useState(false);
 
   return (
-    <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
+    <div id="contact" className="isolate px-6 py-14 sm:py-12 lg:px-8">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -26,7 +26,7 @@ const Contact = () => {
           Contact Us
         </h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          At PharmaTech, we are dedicated to combating counterfeit drugs in the
+          At PharmVerify, we are dedicated to combating counterfeit drugs in the
           market. For inquiries or assistance with our platform, please reach
           out to us.
         </p>

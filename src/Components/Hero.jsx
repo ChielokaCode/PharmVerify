@@ -2,7 +2,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="relative isolate px-6 lg:px-8">
+    <div id="home" className="relative isolate px-6 lg:px-8">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -16,7 +16,7 @@ const Hero = () => {
         />
       </div>
 
-      <div className="mx-auto max-w-full py-32 sm:py-48 lg:py-56 flex flex-col lg:flex-row items-stretch">
+      <div className="mx-auto max-w-full py-32 sm:py-48 lg:py-14 flex flex-col lg:flex-row items-stretch">
         {/* Text Section */}
         <div className="text-center lg:text-left lg:w-1/2 flex flex-col justify-center px-6 lg:px-0">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
