@@ -125,7 +125,7 @@ const ShowUniqueCodes = () => {
                             maxWidth: "50%",
                             width: "50%",
                           }}
-                          value={`http://localhost:3000/verify/${code}`}
+                          value={`https://pharmverify.vercel.app/verify/${code}`}
                           viewBox={`0 0 256 256`}
                         />
                       </div>

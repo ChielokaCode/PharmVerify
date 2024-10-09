@@ -1,5 +1,5 @@
 export const pharmVerifyContract = {
-  address: "0x9d9B9571236E0f3c6294457471aDa048c4F4481B",
+  address: "0xB1ddBD3BDeB7188113da19bDEd4e821b806BdB4e",
   abi: [
     {
       inputs: [{ internalType: "address", name: "_owner", type: "address" }],
@@ -172,7 +172,7 @@ export const pharmVerifyContract = {
       ],
       name: "checkManufacturer",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
-      stateMutability: "nonpayable",
+      stateMutability: "view",
       type: "function",
     },
     {
@@ -504,13 +504,6 @@ export const pharmVerifyContract = {
     },
     {
       inputs: [],
-      name: "isManufacturer",
-      outputs: [{ internalType: "bool", name: "", type: "bool" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
       name: "owner",
       outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
@@ -550,6 +543,7 @@ export const pharmVerifyContract = {
               type: "string",
             },
             { internalType: "string", name: "productImage", type: "string" },
+            { internalType: "string", name: "comment", type: "string" },
           ],
           internalType: "struct YourContract.ProductInfo",
           name: "",

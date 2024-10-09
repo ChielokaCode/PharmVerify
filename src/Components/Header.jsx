@@ -46,7 +46,12 @@ export default function Header() {
           <div className="flex flex-1 items-center justify-start sm:items-stretch sm:justify-start ml-12 sm:ml-0">
             <div className="flex flex-shrink-0 items-center">
               <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl ">
-                PharmVerify
+                <a
+                  href="https://pharmverify.vercel.app/"
+                  classname="hover:underline"
+                >
+                  PharmVerify
+                </a>
               </h2>
             </div>
 

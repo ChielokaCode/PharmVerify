@@ -9,7 +9,7 @@ const VerifyProduct = ({ code }) => {
   const [productInfo, setProductInfo] = useState(null); // Initialized to null
 
   const abi = parseAbi([
-    "function searchPacket(string) returns ((string,string,string,string,string,string,string,string,string,string,string,string))",
+    "function searchPacket(string) returns ((string,string,string,string,string,string,string,string,string,string,string,string,string))",
   ]);
 
   // Use readContract to call the searchPacket function
@@ -37,6 +37,7 @@ const VerifyProduct = ({ code }) => {
         StoringCondition,
         ActiveIngredients,
         ProductImage,
+        Comment,
       ] = result.data; // Destructure the array returned from the contract
 
       // Map it to your productInfo structure
@@ -45,14 +46,15 @@ const VerifyProduct = ({ code }) => {
         ProductNafdacNo,
         ProductForm,
         DosageStrength,
-        BatchNumber,
-        ManufactureDate,
-        ExpirationDate,
+        // BatchNumber,
+        // ManufactureDate,
+        // ExpirationDate,
         ManufacturerName,
         ManufacturerAddress,
         StoringCondition,
         ActiveIngredients,
         ProductImage,
+        Comment,
       });
 
       toast.success("Packet Information fetched successfully!");

@@ -10,11 +10,11 @@ const Footer = () => {
               href="https://pharmverify.vercel.app/"
               className="flex items-center"
             >
-              <img
+              {/* <img
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8 me-3"
                 alt="FlowBite Logo"
-              />
+              /> */}
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 PharmVerify
               </span>
@@ -28,18 +28,10 @@ const Footer = () => {
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <a
-                    href="https://github.com/themesberg/flowbite"
+                    href="https://github.com/chielokacode"
                     className="hover:underline "
                   >
                     Github
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://discord.gg/4eeurUVvTy"
-                    className="hover:underline"
-                  >
-                    Discord
                   </a>
                 </li>
               </ul>
