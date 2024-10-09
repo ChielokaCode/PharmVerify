@@ -11,7 +11,7 @@ const PacketInfo = ({ id }) => {
   const { writeContractAsync } = useWriteContract();
 
   const getBatchForProductAbi = parseAbi([
-    "function getBatchesForProduct(address,uint256) view returns ((uint256,string[],string,uint256,string,string,string)[])",
+    "function getBatchesForProduct(address,uint256) view returns ((uint256,string[],string,uint256,string,uint256,string,string)[])",
   ]);
 
   const generatePacketAbi = parseAbi([
@@ -62,6 +62,7 @@ const PacketInfo = ({ id }) => {
                 batchNumber,
                 batchQuantity,
                 productName,
+                productId,
                 manufactureDate,
                 expirationDate,
               ] = batchItem;

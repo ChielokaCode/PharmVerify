@@ -1,5 +1,5 @@
 export const pharmVerifyContract = {
-  address: "0x8Fd902875052bC682C27ef35527dAA7d82eCdf93",
+  address: "0x9d9B9571236E0f3c6294457471aDa048c4F4481B",
   abi: [
     {
       inputs: [{ internalType: "address", name: "_owner", type: "address" }],
@@ -176,6 +176,20 @@ export const pharmVerifyContract = {
       type: "function",
     },
     {
+      inputs: [{ internalType: "string", name: "_packetCode", type: "string" }],
+      name: "extractBatchNumber",
+      outputs: [{ internalType: "string", name: "", type: "string" }],
+      stateMutability: "pure",
+      type: "function",
+    },
+    {
+      inputs: [{ internalType: "string", name: "_packetCode", type: "string" }],
+      name: "extractProductId",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "pure",
+      type: "function",
+    },
+    {
       inputs: [
         {
           internalType: "address",
@@ -291,6 +305,11 @@ export const pharmVerifyContract = {
                       type: "string",
                     },
                     {
+                      internalType: "uint256",
+                      name: "productId",
+                      type: "uint256",
+                    },
+                    {
                       internalType: "string",
                       name: "manufactureDate",
                       type: "string",
@@ -375,6 +394,7 @@ export const pharmVerifyContract = {
                   type: "uint256",
                 },
                 { internalType: "string", name: "productName", type: "string" },
+                { internalType: "uint256", name: "productId", type: "uint256" },
                 {
                   internalType: "string",
                   name: "manufactureDate",
@@ -422,6 +442,7 @@ export const pharmVerifyContract = {
             { internalType: "string", name: "batchNumber", type: "string" },
             { internalType: "uint256", name: "batchQuantity", type: "uint256" },
             { internalType: "string", name: "productName", type: "string" },
+            { internalType: "uint256", name: "productId", type: "uint256" },
             { internalType: "string", name: "manufactureDate", type: "string" },
             { internalType: "string", name: "expirationDate", type: "string" },
           ],
@@ -455,6 +476,7 @@ export const pharmVerifyContract = {
             { internalType: "string", name: "batchNumber", type: "string" },
             { internalType: "uint256", name: "batchQuantity", type: "uint256" },
             { internalType: "string", name: "productName", type: "string" },
+            { internalType: "uint256", name: "productId", type: "uint256" },
             { internalType: "string", name: "manufactureDate", type: "string" },
             { internalType: "string", name: "expirationDate", type: "string" },
           ],
