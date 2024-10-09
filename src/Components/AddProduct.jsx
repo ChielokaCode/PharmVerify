@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useAccount, useWriteContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
+import { Field, Label, Switch } from "@headlessui/react";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
@@ -15,6 +16,7 @@ const AddProduct = () => {
   const [packagingType, setPackagingType] = useState("");
   const [storageConditions, setStorageConditions] = useState("");
   const [productImages, setProductImages] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -35,7 +37,8 @@ const AddProduct = () => {
       dosageStrength &&
       packagingType &&
       storageConditions &&
-      productImages
+      productImages &&
+      !agreed
     ) {
       setIsFormValid(true);
     } else {
@@ -339,6 +342,32 @@ const AddProduct = () => {
               />
             </div>
           </div>
+
+          <Field className="flex gap-x-4 sm:col-span-2">
+            <div className="flex h-6 items-center">
+              <Switch
+                checked={agreed}
+                onChange={(value) => {
+                  setAgreed(value); // Update the state when switch changes
+                  validateForm(); // Optional: validate form if needed
+                }}
+                className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
+              >
+                <span className="sr-only">Agree to policies</span>
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
+                />
+              </Switch>
+            </div>
+            <Label className="text-sm leading-6 text-gray-600">
+              By selecting this, you agree to our{" "}
+              <a href="#" className="font-semibold text-indigo-600">
+                terms and conditions
+              </a>
+              .
+            </Label>
+          </Field>
         </div>
 
         <div className="mt-10">

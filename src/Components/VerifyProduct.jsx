@@ -1,120 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useAccount, useWriteContract } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 
-const VerifyProduct = () => {
-  const [searchProduct, setSearchProduct] = useState("");
-  const [productInfo, setProductInfo] = useState([]);
-  const [isFormValid, setIsFormValid] = useState(false);
+const VerifyProduct = ({ code }) => {
   const { isConnected } = useAccount();
-  const { writeContractAsync } = useWriteContract();
+  const [productInfo, setProductInfo] = useState(null); // Initialized to null
 
   const abi = parseAbi([
-    "function searchPacket(string) returns (uint256,string,string,string,string,string,string,string,string,string,string,(uint256,string[],string,uint256,string,string)[],bool)",
+    "function searchPacket(string) returns ((string,string,string,string,string,string,string,string,string,string,string,string))",
   ]);
 
-  const validateForm = () => {
-    if (searchProduct) {
-      setIsFormValid(true);
-    } else {
-      setIsFormValid(false);
-    }
-  };
+  // Use readContract to call the searchPacket function
+  const result = useReadContract({
+    address: pharmVerifyContract.address,
+    abi: abi,
+    functionName: "searchPacket",
+    args: isConnected ? [code] : undefined, // Send 'code' as argument if connected
+    enabled: isConnected, // Enable only if connected
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (result.data) {
+      console.log(result.data);
+      const [
+        productName,
+        productNafdacNo,
+        productForm,
+        dosageStrength,
+        batchNumber,
+        manufactureDate,
+        expirationDate,
+        manufacturerName,
+        manufacturerAddress,
+        storingCondition,
+        activeIngredients,
+        productImage,
+      ] = result.data; // Destructure the array returned from the contract
 
-    if (!isFormValid) {
-      toast.error("Please fill in all required fields");
-      return;
+      // Map it to your productInfo structure
+      setProductInfo({
+        productName,
+        productNafdacNo,
+        productForm,
+        dosageStrength,
+        batchNumber,
+        manufactureDate,
+        expirationDate,
+        manufacturerName,
+        manufacturerAddress,
+        storingCondition,
+        activeIngredients,
+        productImage,
+      });
+
+      toast.success("Packet Information fetched successfully!");
     }
 
-    if (!isConnected) {
-      toast.error("Please connect your Wallet!");
-      return;
+    if (result.error) {
+      console.log(code);
+      console.log(result.error);
+      toast.error("Invalid Product Number");
     }
-
-    try {
-      // Call the contract's addManufacturer function
-      await writeContractAsync(
-        {
-          address: pharmVerifyContract.address,
-          abi: abi,
-          functionName: "searchPacket",
-          args: [searchProduct], // Pass in the correct argument
-        },
-        {
-          onSettled(data, error) {
-            if (error) {
-              toast.error(`Transaction failed : ${error.cause?.reason}`);
-            } else {
-              console.log(`Products fetched : ${data}`);
-              toast.success("Product Information Fetched Successfully!");
-            }
-            console.log("Settled", { data, error });
-          },
-        }
-      );
-    } catch (err) {
-      console.error("Transaction failed:", err);
-    }
-  };
+  }, [result.data, result.error]);
 
   return (
     <div>
-      <div className="mt-4">
-        <form className="max-w-md mx-auto">
-          <h2 className="text-2xl font-bold">
-            Search Pharmaceutical Products here
-          </h2>
-          <label
-            htmlFor="default-search"
-            className="mb-2 text-sm font-medium text-white sr-only dark:text-white"
-          >
-            Search
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="search"
-              value={searchProduct}
-              onChange={(e) => {
-                setSearchProduct(e.target.value);
-                validateForm(); // Validate whenever input changes
-              }}
-              id="default-search"
-              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search Pharmaceutical Products"
-              required
-            />
-            <button
-              onClick={handleSubmit}
-              type="submit"
-              className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
+      {productInfo ? (
+        <div className="overflow-x-auto mt-8">
+          <table className="min-w-[50%] xl:ml-72 lg:ml-72 border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="py-2 px-4 text-left font-semibold text-gray-700 border-b border-gray-300">
+                  Field
+                </th>
+                <th className="py-2 px-4 text-left font-semibold text-gray-700 border-b border-gray-300">
+                  Value
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(productInfo).map(([key, value], index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="py-2 px-4 border-b border-gray-300">{key}</td>
+                  <td className="py-2 px-4 border-b border-gray-300">
+                    {value}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div>Product not Found</div>
+      )}
     </div>
   );
 };

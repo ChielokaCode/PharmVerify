@@ -15,9 +15,13 @@ const SideBar = () => {
 
   const navigation = [
     { name: "Add Product", href: "/dashboard/addProduct", current: true },
-    { name: "Edit Product", href: "/dashboard/editProduct", current: false },
     { name: "Show Products", href: "/dashboard/showProducts", current: false },
-    { name: "Inbox", href: "/dashboard/indox", current: false },
+    {
+      name: "Show Unique Codes",
+      href: "/dashboard/showUniqueCodes",
+      current: false,
+    },
+    // { name: "Inbox", href: "/dashboard/indox", current: false },
   ];
 
   function classNames(...classes) {
@@ -150,7 +154,7 @@ const SideBar = () => {
               </Link>
             </li>
             {/* Inbox */}
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -169,7 +173,7 @@ const SideBar = () => {
                   3
                 </span>
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </aside>
