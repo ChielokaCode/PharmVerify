@@ -102,7 +102,7 @@ const ShowProduct = ({ products }) => {
             </table>
 
             {/* Packets Table */}
-            <h3 className="text-lg font-bold mt-6 mb-2">Packets</h3>
+            <h3 className="text-lg font-bold mt-6 mb-2">Batches</h3>
 
             <PacketInfo id={productId} />
 

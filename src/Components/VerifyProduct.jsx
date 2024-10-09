@@ -75,7 +75,7 @@ const VerifyProduct = ({ code }) => {
             <thead>
               <tr className="bg-gray-200">
                 <th className="py-2 px-4 text-left font-semibold text-gray-700 border-b border-gray-300">
-                  Field
+                  Product Details
                 </th>
                 <th className="py-2 px-4 text-left font-semibold text-gray-700 border-b border-gray-300">
                   Value
@@ -87,7 +87,18 @@ const VerifyProduct = ({ code }) => {
                 <tr key={index} className="hover:bg-gray-100">
                   <td className="py-2 px-4 border-b border-gray-300">{key}</td>
                   <td className="py-2 px-4 border-b border-gray-300">
-                    {value}
+                    {typeof value === "string" &&
+                    (value.endsWith(".png") ||
+                      value.endsWith(".jpg") ||
+                      value.endsWith(".jpeg")) ? (
+                      <img
+                        src={value}
+                        alt={key}
+                        className="w-24 h-24 object-cover"
+                      />
+                    ) : (
+                      value
+                    )}
                   </td>
                 </tr>
               ))}
@@ -98,7 +109,6 @@ const VerifyProduct = ({ code }) => {
         <>
           <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
             <div className="text-center">
-              <p className="text-base font-semibold text-indigo-600">404</p>
               <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                 Product not found
               </h1>
