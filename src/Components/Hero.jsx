@@ -22,16 +22,16 @@ const Hero = () => {
         <div className="text-center lg:text-left lg:w-1/2 flex flex-col justify-center px-6 lg:px-0">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Introducing the future of Authentic Pharmaceutical products.{" "}
+              Stay Safe, Buy Genuine Pharmaceutical Products
             </div>
           </div>
           <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Ensure Pharmaceutical products Authenticity
+            Instantly Verify Your Medicine’s Authenticity with One Scan!!!
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Combat the threat of counterfeit drugs in the market. Our
             decentralized application empowers consumers to verify the
-            authenticity of medications with a simple 8-digit code. Each
+            authenticity of medications with a QR code scanner. Each
             Pharmaceutical product packet is uniquely coded, ensuring
             transparency and trust in pharmaceutical products.
           </p>

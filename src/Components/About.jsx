@@ -44,11 +44,11 @@ const About = () => {
             PharmVerify is a revolutionary dApp designed to combat the alarming
             rise of counterfeit drugs in the market. Our platform enables drug
             manufacturers to register their products securely and generate
-            unique 8-digit codes for each packet, ensuring that consumers can
-            easily verify the authenticity and validity of their medications. By
-            leveraging blockchain technology, we aim to create a transparent and
-            reliable ecosystem that safeguards public health and enhances trust
-            in pharmaceutical products.
+            unique QR codes for each packet, ensuring that consumers can easily
+            verify the authenticity and validity of their medications by
+            scanning it. By leveraging blockchain technology, we aim to create a
+            transparent and reliable ecosystem that safeguards public health and
+            enhances trust in pharmaceutical products.
           </p>
           <br />
           <h2 className="text-md font-bold tracking-tight text-white sm:text-xl">
