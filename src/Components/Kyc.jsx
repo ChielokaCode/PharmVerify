@@ -89,6 +89,7 @@ const Kyc = () => {
           onSettled(data, error) {
             if (error) {
               toast.error(`Transaction failed : ${error.cause?.reason}`);
+              router.push("/dashboard/addProduct");
             } else {
               toast.success("Manufacturer added successfully!");
               router.push("/dashboard/addProduct");
