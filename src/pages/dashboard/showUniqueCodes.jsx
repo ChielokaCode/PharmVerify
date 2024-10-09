@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Footer, Header, ShowUniqueCodes } from "../../Components";
+import { Footer, Header, ShowUniqueCodes, SideBar } from "../../Components";
 
 const showUniqueCodes = () => {
   return (
     <div>
       <Header />
+      <SideBar />
       <ShowUniqueCodes />
     </div>
   );
