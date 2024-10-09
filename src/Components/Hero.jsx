@@ -26,7 +26,7 @@ const Hero = () => {
             </div>
           </div>
           <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Ensure Pharmaceutical products Authenticity with Our dApp
+            Ensure Pharmaceutical products Authenticity
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Combat the threat of counterfeit drugs in the market. Our

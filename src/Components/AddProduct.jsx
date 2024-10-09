@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAccount, useWriteContract } from "wagmi";
+import { pharmVerifyContract } from "../context/pharmVerifyContract";
+import { parseAbi } from "viem";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
@@ -14,6 +17,13 @@ const AddProduct = () => {
   const [productImages, setProductImages] = useState("");
 
   const [isFormValid, setIsFormValid] = useState(false);
+
+  const { writeContractAsync } = useWriteContract();
+  const account = useAccount();
+  const { isConnected } = useAccount();
+  const abi = parseAbi([
+    "function addProduct(address,string,string,string,string,string,string,string,string) returns (string)",
+  ]);
 
   // Function to validate form fields
   const validateForm = () => {
@@ -34,20 +44,69 @@ const AddProduct = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isFormValid) {
-      // Proceed with form submission logic
-      toast("Form submitted succesfully");
-      console.log("Form submitted succesfully");
-    } else {
-      toast("Please fill in all required fields");
+    validateForm();
+
+    if (!isFormValid) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!isConnected) {
+      toast.error("Please connect your Wallet!");
+      return;
+    }
+
+    try {
+      // Call the contract's addManufacturer function
+      await writeContractAsync(
+        {
+          address: pharmVerifyContract.address,
+          abi: abi,
+          functionName: "addProduct",
+          args: [
+            account.address,
+            productName,
+            productNafdacNo,
+            productForm,
+            activeIngredients,
+            dosageStrength,
+            packagingType,
+            storageConditions,
+            productImages,
+          ],
+        },
+        {
+          onSettled(data, error) {
+            if (error) {
+              toast.error(`Transaction failed : ${error.cause?.reason}`);
+            } else {
+              toast.success("Product added successfully!");
+              setProductName("");
+              setProductNafdacNo("");
+              setProductForm("");
+              setActiveIngredients("");
+              setDosageStrength("");
+              setPackagingType("");
+              setStorageConditions("");
+              setProductImages("");
+            }
+            console.log("Settled", { data, error });
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Transaction failed:", error);
     }
   };
 
   return (
-    <div id="addProduct" className="isolate px-6 py-14 sm:py-12 lg:px-8 xl:pl-72">
+    <div
+      id="addProduct"
+      className="isolate px-6 py-14 sm:py-12 lg:px-8 xl:pl-72"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[-10rem] z-30 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"

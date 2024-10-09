@@ -1,11 +1,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { pharmVerifyContract } from "../context/pharmVerifyContract";
+// import { useCapabilities, useWriteContracts } from "wagmi/experimental";
+import { parseAbi } from "viem";
 
-const PacketForm = ({ product }) => {
+const PacketForm = ({ id }) => {
   // State to toggle the form visibility
   const [showForm, setShowForm] = useState(false);
   const [batchNo, setBatchNo] = useState("");
+  const [batchQuantity, setBatchQuantity] = useState(1);
   const [manufactureDate, setManufactureDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
@@ -13,9 +18,22 @@ const PacketForm = ({ product }) => {
   // Toggle function to show/hide form
   const toggleForm = () => setShowForm(!showForm);
 
+  const { writeContractAsync } = useWriteContract();
+  const account = useAccount();
+  const { isConnected } = useAccount();
+
+  const abi = parseAbi([
+    "function addBatch(address,uint256,string,uint256,string,string) returns (string)",
+  ]);
+
   // Function to validate form fields
   const validateForm = () => {
-    if (batchNo && manufactureDate && expirationDate) {
+    if (
+      batchNo.trim() !== "" &&
+      batchQuantity !== "" &&
+      manufactureDate.trim() !== "" &&
+      expirationDate.trim() !== ""
+    ) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
@@ -23,15 +41,52 @@ const PacketForm = ({ product }) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isFormValid) {
-      // Proceed with form submission logic
-      toast("Form submitted succesfully");
-      console.log("Form submitted succesfully");
-    } else {
-      toast("Please fill in all required fields");
+    // Revalidate the form at the start of handleSubmit
+    validateForm();
+
+    if (!isFormValid) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!isConnected) {
+      toast.error("Please connect your Wallet!");
+      return;
+    }
+
+    try {
+      // Call the contract's addManufacturer function
+      await writeContractAsync(
+        {
+          address: pharmVerifyContract.address,
+          abi: abi,
+          functionName: "addBatch",
+          args: [
+            account.address,
+            id,
+            batchNo,
+            batchQuantity,
+            manufactureDate,
+            expirationDate,
+          ],
+        },
+        {
+          onSettled(data, error) {
+            if (error) {
+              toast.error(`Transaction failed : ${error.cause?.reason}`);
+            } else {
+              toast.success("Batch added successfully!");
+              window.location.reload();
+            }
+            console.log("Settled", { data, error });
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Transaction failed:", error);
     }
   };
 
@@ -71,6 +126,28 @@ const PacketForm = ({ product }) => {
             />
           </div>
 
+          {/* Batch Quantity */}
+          <div className="mb-4">
+            <label
+              htmlFor="batchQuantity"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Batch Quantity
+            </label>
+            <input
+              type="number"
+              id="batchQuantity"
+              name="batchQuantity"
+              value={batchQuantity}
+              onChange={(e) => {
+                setBatchQuantity(e.target.value);
+                validateForm(); // Validate whenever input changes
+              }}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Enter batch number"
+            />
+          </div>
+
           {/* Manufacture Date */}
           <div className="mb-4">
             <label
@@ -80,7 +157,7 @@ const PacketForm = ({ product }) => {
               Manufacture Date
             </label>
             <input
-              type="date"
+              type="text"
               id="manufactureDate"
               name="manufactureDate"
               value={manufactureDate}
@@ -100,7 +177,7 @@ const PacketForm = ({ product }) => {
               Expiration Date
             </label>
             <input
-              type="date"
+              type="text"
               id="expirationDate"
               name="expirationDate"
               value={expirationDate}

@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Field, Label, Switch } from "@headlessui/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useAccount, useWriteContract } from "wagmi";
+import { pharmVerifyContract } from "../context/pharmVerifyContract";
+import { parseAbi } from "viem";
+import { useRouter } from "next/router";
 
 const Kyc = () => {
   const [manufacturerName, setManufacturerName] = useState("");
@@ -18,6 +21,15 @@ const Kyc = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [agreed, setAgreed] = useState(false);
+
+  const { writeContractAsync } = useWriteContract();
+  const account = useAccount();
+  const { isConnected } = useAccount();
+  const abi = parseAbi([
+    "function addManufacturer(address,string,string,string,string,string,string,string,string,string) returns (string)",
+  ]);
+
+  const router = useRouter();
 
   // Function to validate form fields
   const validateForm = () => {
@@ -40,15 +52,53 @@ const Kyc = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isFormValid) {
-      // Proceed with form submission logic
-      toast("Form submitted succesfully");
-      console.log("Form submitted succesfully");
-    } else {
-      toast("Please fill in all required fields");
+    if (!isFormValid) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!isConnected) {
+      toast.error("Please connect your Wallet!");
+      return;
+    }
+
+    try {
+      // Call the contract's addManufacturer function
+      await writeContractAsync(
+        {
+          address: pharmVerifyContract.address,
+          abi: abi,
+          functionName: "addManufacturer",
+          args: [
+            account.address,
+            manufacturerName,
+            licenseNumber,
+            businessRegNo,
+            companyAddress,
+            companyPhoneNo,
+            companyEmail,
+            companyCountry,
+            companyCertification,
+            companyRegulatoryBody,
+          ], // Pass in the correct argument
+        },
+        {
+          onSettled(data, error) {
+            if (error) {
+              toast.error(`Transaction failed : ${error.cause?.reason}`);
+            } else {
+              toast.success("Manufacturer added successfully!");
+              router.push("/dashboard/addProduct");
+            }
+            console.log("Settled", { data, error });
+          },
+        }
+      );
+    } catch (err) {
+      console.error("Transaction failed:", err);
     }
   };
 

@@ -1,181 +1,185 @@
-import React, { useState } from "react";
-import { ethers } from "ethers";
-import toast from "react-hot-toast";
+// import React, { useState } from "react";
+// import { ethers } from "ethers";
+// import toast from "react-hot-toast";
 
-import {
-  CHECK_WALLET_CONNECTED,
-  CONNECT_WALLET,
-  GET_BALANCE,
-  CHECK_ACCOUNT_BALANCE,
-  TOKEN_ICO_CONTRACT,
-  ERC20,
-  ERC20_CONTRACT,
-  TOKEN_ADDRESS,
-  addtokenToMetaMask,
-  CONTRACT_ADDRESS,
-  CONTRACT_ABI,
-} from "./constants";
+// import {
+//   CHECK_WALLET_CONNECTED,
+//   CONNECT_WALLET,
+//   CONTRACT,
+//   CONTRACT_ADDRESS,
+//   CONTRACT_ABI,
+// } from "./constants";
 
-export const TOKEN_ICO_Context = React.createContext();
+// export const TOKEN_ICO_Context = React.createContext();
 
-export const TOKEN_ICO_Provider = ({ children }) => {
-  const DAPP_NAME = "PharmVerify DAPP";
-  const currency = "ETH";
-  const network = "Base";
+// export const TOKEN_ICO_Provider = ({ children }) => {
+//   const DAPP_NAME = "PharmVerify DAPP";
+//   const currency = "ETH";
+//   const network = "Base";
 
-  const [loader, setLoader] = useState(false);
-  const [account, setAccount] = useState();
-  const [count, setCount] = useState(0);
+//   const [loader, setLoader] = useState(false);
+//   const [account, setAccount] = useState();
 
-  const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
-  const notifyError = (msg) => toast.error(msg, { duration: 2000 });
+//   const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
+//   const notifyError = (msg) => toast.error(msg, { duration: 2000 });
 
-  //--- CONTRACT FUNCTION ---
-  const BUY_TOKEN = async (amount) => {
-    try {
-      setLoader(true);
-      const address = await CHECK_WALLET_CONNECTED();
+//   //--- CONTRACT FUNCTION ---
 
-      if (address) {
-        const contract = await TOKEN_ICO_CONTRACT();
+//   const ADD_MANUFACTURER = async (
+//     owner,
+//     manufacturerName,
+//     licenseNumber,
+//     businessRegNo,
+//     companyAddress,
+//     companyPhoneNo,
+//     companyEmail,
+//     companyCountry,
+//     companyCertification,
+//     companyRegulatoryBody
+//   ) => {
+//     try {
+//       setLoader(true);
+//       const address = await CHECK_WALLET_CONNECTED();
 
-        const tokenDetails = await contract.getTokenDetails();
+//       if (address) {
+//         console.log("Connected wallet address:", address);
+//         const contract = await CONTRACT();
 
-        const avaliableToken = ethers.utils.formatEther(
-          tokenDetails.balance.toString()
-        );
+//         // Calling the addManufacturer function on the contract with the necessary arguments
+//         const transaction = await contract.addManufacturer(
+//           address,
+//           manufacturerName,
+//           licenseNumber,
+//           businessRegNo,
+//           companyAddress,
+//           companyPhoneNo,
+//           companyEmail,
+//           companyCountry,
+//           companyCertification,
+//           companyRegulatoryBody,
+//           {
+//             gasLimit: ethers.utils.hexlify(8000000), // Set gas limit for the transaction
+//           }
+//         );
 
-        if (avaliableToken > 1) {
-          const price =
-            ethers.utils.formatEther(tokenDetails.tokenPrice.toString()) *
-            Number(amount);
+//         // Wait for the transaction to be mined/confirmed
+//         await transaction.wait();
+//         setLoader(false);
+//         notifySuccess("Manufacturer added successfully");
+//         window.location.reload(); // Reload the page to reflect changes
+//       }
+//     } catch (error) {
+//       console.log("Error adding manufacturer:", error);
+//       notifyError("Error, try again later");
+//       setLoader(false); // Reset the loader in case of an error
+//     }
+//   };
 
-          const payAmount = ethers.utils.parseUnits(price.toString(), "ether");
+//   // const TOKEN_WITHDRAW = async () => {
+//   //   try {
+//   //     setLoader(true);
+//   //     const address = await CHECK_WALLET_CONNECTED();
 
-          console.log(payAmount);
+//   //     if (address) {
+//   //       const contract = await CONTRACT();
 
-          const transaction = await contract.buyToken(Number(amount), {
-            value: payAmount.toString(),
-            gasLimit: ethers.utils.hexlify(8000000),
-          });
+//   //       const tokenDetails = await contract.getTokenDetails();
 
-          await transaction.wait();
-          setLoader(false);
-          notifySuccess("Transaction completed successfully");
-          window.location.reload();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      notifyError("error try again later");
-      setLoader(false);
-    }
-  };
+//   //       const avaliableToken = ethers.utils.formatEther(
+//   //         tokenDetails.balance.toString()
+//   //       );
 
-  const TOKEN_WITHDRAW = async () => {
-    try {
-      setLoader(true);
-      const address = await CHECK_WALLET_CONNECTED();
+//   //       if (avaliableToken > 1) {
+//   //         const transaction = await contract.withdrawAllTokens();
 
-      if (address) {
-        const contract = await TOKEN_ICO_CONTRACT();
+//   //         await transaction.wait();
+//   //         setLoader(false);
+//   //         notifySuccess("Transaction completed successfully");
+//   //         window.location.reload();
+//   //       }
+//   //     }
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //     notifyError("error try again later");
+//   //     setLoader(false);
+//   //   }
+//   // };
 
-        const tokenDetails = await contract.getTokenDetails();
+//   // const DONATE = async (AMOUNT) => {
+//   //   try {
+//   //     setLoader(true);
+//   //     const address = await CHECK_WALLET_CONNECTED();
 
-        const avaliableToken = ethers.utils.formatEther(
-          tokenDetails.balance.toString()
-        );
+//   //     if (address) {
+//   //       const contract = await TOKEN_ICO_CONTRACT();
+//   //       const payAmount = ethers.utils.parseUnits(AMOUNT.toString(), "ether");
 
-        if (avaliableToken > 1) {
-          const transaction = await contract.withdrawAllTokens();
+//   //       const transaction = await contract.transferToOwner(payAmount, {
+//   //         value: payAmount.toString(),
+//   //         gasLimit: ethers.utils.hexlify(8000000),
+//   //       });
 
-          await transaction.wait();
-          setLoader(false);
-          notifySuccess("Transaction completed successfully");
-          window.location.reload();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      notifyError("error try again later");
-      setLoader(false);
-    }
-  };
+//   //       await transaction.wait();
+//   //       setLoader(false);
+//   //       notifySuccess("Transaction completed successfully");
+//   //       window.location.reload();
+//   //     }
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //     notifyError("error try again later");
+//   //     setLoader(false);
+//   //   }
+//   // };
 
-  const DONATE = async (AMOUNT) => {
-    try {
-      setLoader(true);
-      const address = await CHECK_WALLET_CONNECTED();
+//   // const TRANSFER_ETHER = async (transfer) => {
+//   //   try {
+//   //     setLoader(true);
 
-      if (address) {
-        const contract = await TOKEN_ICO_CONTRACT();
-        const payAmount = ethers.utils.parseUnits(AMOUNT.toString(), "ether");
+//   //     const { _receiver, _amount } = transfer;
+//   //     const address = await CHECK_WALLET_CONNECTED();
 
-        const transaction = await contract.transferToOwner(payAmount, {
-          value: payAmount.toString(),
-          gasLimit: ethers.utils.hexlify(8000000),
-        });
+//   //     if (address) {
+//   //       const contract = await TOKEN_ICO_CONTRACT();
+//   //       const payAmount = ethers.utils.parseUnits(_amount.toString(), "ether");
 
-        await transaction.wait();
-        setLoader(false);
-        notifySuccess("Transaction completed successfully");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
-      notifyError("error try again later");
-      setLoader(false);
-    }
-  };
+//   //       const transaction = await contract.transferEther(_receiver, payAmount, {
+//   //         value: payAmount.toString(),
+//   //         gasLimit: ethers.utils.hexlify(8000000),
+//   //       });
 
-  const TRANSFER_ETHER = async (transfer) => {
-    try {
-      setLoader(true);
+//   //       await transaction.wait();
+//   //       setLoader(false);
+//   //       notifySuccess("Transaction completed successfully");
+//   //       window.location.reload();
+//   //     }
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //     notifyError("error try again later");
+//   //     setLoader(false);
+//   //   }
+//   // };
 
-      const { _receiver, _amount } = transfer;
-      const address = await CHECK_WALLET_CONNECTED();
-
-      if (address) {
-        const contract = await TOKEN_ICO_CONTRACT();
-        const payAmount = ethers.utils.parseUnits(_amount.toString(), "ether");
-
-        const transaction = await contract.transferEther(_receiver, payAmount, {
-          value: payAmount.toString(),
-          gasLimit: ethers.utils.hexlify(8000000),
-        });
-
-        await transaction.wait();
-        setLoader(false);
-        notifySuccess("Transaction completed successfully");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
-      notifyError("error try again later");
-      setLoader(false);
-    }
-  };
-
-  return (
-    <TOKEN_ICO_Context.Provider
-      value={{
-        BUY_TOKEN,
-        TRANSFER_ETHER,
-        DONATE,
-        TOKEN_WITHDRAW,
-        CONNECT_WALLET,
-        ERC20,
-        CHECK_ACCOUNT_BALANCE,
-        setAccount,
-        setLoader,
-        addtokenToMetaMask,
-        TOKEN_ADDRESS,
-        loader,
-        account,
-        currency,
-      }}
-    >
-      {children}
-    </TOKEN_ICO_Context.Provider>
-  );
-};
+//   return (
+//     <TOKEN_ICO_Context.Provider
+//       value={{
+//         ADD_MANUFACTURER,
+//         // BUY_TOKEN,
+//         // TRANSFER_ETHER,
+//         // DONATE,
+//         // TOKEN_WITHDRAW,
+//         CONNECT_WALLET,
+//         // ERC20,
+//         CHECK_ACCOUNT_BALANCE,
+//         setAccount,
+//         setLoader,
+//         // addtokenToMetaMask,
+//         // TOKEN_ADDRESS,
+//         // loader,
+//         // account,
+//         // currency,
+//       }}
+//     >
+//       {children}
+//     </TOKEN_ICO_Context.Provider>
+//   );
+// };

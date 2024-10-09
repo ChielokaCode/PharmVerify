@@ -1,150 +1,132 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import PacketForm from "./PacketForm";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { pharmVerifyContract } from "../context/pharmVerifyContract";
+import { parseAbi } from "viem";
+import toast from "react-hot-toast";
+
+import ViewCodesModal from "./ViewCodesModal";
+import ToggleModalButton from "./ToggleModalButton";
+import PacketInfo from "./PacketInfo";
 
 const ShowProduct = ({ products }) => {
   // Check if products is undefined or null
   if (!products || products.length === 0) {
-    return <p>Loading...</p>; // Show a loading state or a placeholder
+    return <p>Loading...</p>;
   }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { writeContractAsync } = useWriteContract();
+  const account = useAccount();
+  const { isConnected } = useAccount();
+  const [isFormValid, setIsFormValid] = useState(false);
 
   return (
-    <div className="p-4 xl:pl-72 bg-gray-100">
+    <div className="p-4 xl:pl-72 lg:pl-72 md:pl-72 bg-gray-100">
       <h2 className="text-xl font-bold mb-4">Product Details</h2>
 
-      {products.map((product) => (
-        <div key={product.id} className="mb-6">
-          <strong className="text-2xl font-bold">{product.id}</strong>
-          {/* Product Details Table */}
-          <table className="table-auto mb-6 bg-white">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Field</th>
-                <th className="px-4 py-2">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border px-4 py-2">Product Name</td>
-                <td className="border px-4 py-2">{product.productName}</td>
-              </tr>
-              {product.manufacturer && (
-                <tr>
-                  <td className="border px-4 py-2">Manufacturer Name</td>
-                  <td className="border px-4 py-2">
-                    {product.manufacturer.manufacturerName}
-                  </td>
-                </tr>
-              )}
-              <tr>
-                <td className="border px-4 py-2">NAFDAC Number</td>
-                <td className="border px-4 py-2">{product.productNafdacNo}</td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Form</td>
-                <td className="border px-4 py-2">{product.productForm}</td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Active Ingredients</td>
-                <td className="border px-4 py-2">
-                  {product.activeIngredients}
-                </td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Dosage Strength</td>
-                <td className="border px-4 py-2">
-                  {product.dosageStrength} mg
-                </td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Packaging Type</td>
-                <td className="border px-4 py-2">{product.packagingType}</td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Storage Conditions</td>
-                <td className="border px-4 py-2">
-                  {product.storageConditions}
-                </td>
-              </tr>
-              <tr>
-                <td className="border px-4 py-2">Approved</td>
-                <td className="border px-4 py-2">
-                  {product.isApproved ? "Yes" : "No"}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      {products.map((productArray, productIndex) => {
+        const [
+          productId,
+          productName,
+          productNafdacNo,
+          productForm,
+          activeIngredients,
+          manufacturerName,
+          manufacturerAddress,
+          dosageStrength,
+          packagingType,
+          storageConditions,
+          productImage,
+          packets,
+          isApproved,
+        ] = productArray;
 
-          {/* Packets Table */}
-          <h3 className="text-lg font-bold mt-6 mb-2">Packets</h3>
-          {product.packets && product.packets.length > 0 ? (
-            <table className="table-auto mb-2">
+        return (
+          // Add a return here
+          <div key={productId} className="mb-6">
+            <strong className="text-2xl font-bold">{productIndex + 1}</strong>
+
+            {/* Product Details Table */}
+            <table className="table-auto mb-6 bg-white">
               <thead>
                 <tr>
-                  <th className="px-2 py-2">Batch Number</th>
-                  <th className="px-2 py-2">Quantity</th>
-                  <th className="px-2 py-2">Manufacture Date</th>
-                  <th className="px-2 py-2">Expiration Date</th>
-                  <th className="px-2 py-2">Code</th>
+                  <th className="px-4 py-2">Field</th>
+                  <th className="px-4 py-2">Value</th>
                 </tr>
               </thead>
               <tbody>
-                {product.packets.map((packet, index) => (
-                  <tr key={index} className="bg-white">
-                    <td className="border px-2 py-2">{packet.batchNumber}</td>
-                    <td className="border px-2 py-2">{packet.quantity}</td>
-                    <td className="border px-2 py-2">
-                      {packet.manufactureDate}
-                    </td>
-                    <td className="border px-2 py-2">
-                      {packet.expirationDate}
-                    </td>
-                    <td className="border px-2 py-2 bg-blue-500">
-                      <button
-                        type="submit"
-                        onClick={(event) => {
-                          {
-                          }
-                        }}
-                        classname="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-                      >
-                        <i
-                          className="fa fa-address-book-o"
-                          aria-hidden="true"
-                        />
-                        Generate Codes
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td className="border px-4 py-2">Product Name</td>
+                  <td className="border px-4 py-2">{productName}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Manufacturer Name</td>
+                  <td className="border px-4 py-2">{manufacturerName}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Manufacturer Address</td>
+                  <td className="border px-4 py-2">{manufacturerAddress}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">NAFDAC Number</td>
+                  <td className="border px-4 py-2">{productNafdacNo}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Form</td>
+                  <td className="border px-4 py-2">{productForm}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Active Ingredients</td>
+                  <td className="border px-4 py-2">{activeIngredients}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Dosage Strength</td>
+                  <td className="border px-4 py-2">{dosageStrength} mg</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Packaging Type</td>
+                  <td className="border px-4 py-2">{packagingType}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Storage Conditions</td>
+                  <td className="border px-4 py-2">{storageConditions}</td>
+                </tr>
+                <tr>
+                  <td className="border px-4 py-2">Approved</td>
+                  <td className="border px-4 py-2">
+                    {isApproved ? "Yes" : "No"}
+                  </td>
+                </tr>
               </tbody>
             </table>
-          ) : (
-            <p>No packets available.</p>
-          )}
 
-          {/* Product Images */}
-          <h3 className="text-lg font-bold mt-6 mb-2">Product Images</h3>
-          <div className="flex space-x-4">
-            {product.productImages && product.productImages.length > 0 ? (
-              product.productImages.map((image, index) => (
+            {/* Packets Table */}
+            <h3 className="text-lg font-bold mt-6 mb-2">Packets</h3>
+
+            <PacketInfo id={productId} />
+
+            {/* Product Images */}
+            <h3 className="text-lg font-bold mt-6 mb-2">Product Image</h3>
+            <div className="flex space-x-4">
+              {productImage && productImage.length > 0 ? (
                 <img
-                  key={index}
-                  src={image}
-                  alt={`Product ${index}`}
+                  key={productId}
+                  src={productImage}
+                  alt={`Product ${productId}`}
                   className="w-32 h-32 object-cover"
                 />
-              ))
-            ) : (
-              <p>No images available.</p>
-            )}
-          </div>
+              ) : (
+                <p>No image available.</p>
+              )}
+            </div>
 
-          <PacketForm product={products} />
-          <br />
-          <br />
-        </div>
-      ))}
+            <PacketForm id={productId} />
+            <br />
+            <br />
+          </div>
+        );
+      })}
     </div>
   );
 };

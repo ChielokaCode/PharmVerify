@@ -1,81 +1,45 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { pharmVerifyContract } from "../../context/pharmVerifyContract";
+import { parseAbi } from "viem";
 
 import { SideBar, Header, ShowProduct } from "../../Components/index";
-import { TOKEN_ICO_Context } from "../../context/index";
 
 const showProducts = () => {
-  const product = [
-    {
-      id: 1,
-      productName: "Panadol Extra",
-      productNafdacNo: "A5-0054L",
-      productForm: "Tablet",
-      activeIngredients: "Paracetamol, Caffeine",
-      dosageStrength: 500,
-      packagingType: "Blister Pack",
-      storageConditions: "Store in a cool, dry place away from direct sunlight",
-      productImages: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-      ],
-      packets: [
-        {
-          batchNumber: "BN12345",
-          quantity: 10,
-          manufactureDate: "10-04-2024",
-          expirationDate: "03-01-2026",
-        },
-        {
-          batchNumber: "BN67890",
-          quantity: 15,
-          manufactureDate: "10-04-2024",
-          expirationDate: "03-01-2026",
-        },
-      ],
-      isApproved: true,
-      manufacturer: {
-        manufacturerName: "Pharma Ltd.",
-      },
-    },
-    {
-      id: 2,
-      productName: "Panadol Extra",
-      productNafdacNo: "A5-0054L",
-      productForm: "Tablet",
-      activeIngredients: "Paracetamol, Caffeine",
-      dosageStrength: 500,
-      packagingType: "Blister Pack",
-      storageConditions: "Store in a cool, dry place away from direct sunlight",
-      productImages: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-      ],
-      packets: [
-        {
-          batchNumber: "BN12345",
-          quantity: 20,
-          manufactureDate: "10-04-2024",
-          expirationDate: "03-01-2026",
-        },
-        {
-          batchNumber: "BN67890",
-          quantity: 20,
-          manufactureDate: "10-04-2024",
-          expirationDate: "03-01-2026",
-        },
-      ],
-      isApproved: true,
-      manufacturer: {
-        manufacturerName: "Pharma Ltd.",
-      },
-    },
-  ];
+  const account = useAccount();
+  const { isConnected } = useAccount();
+  const [product, setProduct] = useState([]);
+  const abi = parseAbi([
+    `function getAllProductsByManufacturer(address) returns ((uint256, string, string, string, string, string, string, string, string, string, string, (uint256, string[], string, uint256, string, string)[], bool)[])`,
+  ]);
+
+  const manufacturerAddress = account.address;
+
+  const result = useReadContract({
+    address: pharmVerifyContract.address,
+    abi: abi,
+    functionName: "getAllProductsByManufacturer",
+    args: isConnected ? [manufacturerAddress] : undefined,
+  });
+
+  useEffect(() => {
+    if (result.data) {
+      setProduct(result.data);
+      console.log(result.data);
+      toast.success("Products fetched successfully!");
+    }
+
+    if (result.error) {
+      toast.error(`Transaction failed: ${result.error.message}`);
+    }
+  }, [result.data, result.error]);
 
   return (
     <>
       <Header />
       <SideBar />
-      <ShowProduct products={product} />
+      <ShowProduct products={result.data} />
     </>
   );
 };
