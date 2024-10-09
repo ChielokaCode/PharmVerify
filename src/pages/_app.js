@@ -24,7 +24,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const config = getDefaultConfig({
   appName: "PharmVerify Dapp",
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+  projectId: "ba2493924d886268c979af445bdc48e8",
   chains: [baseSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
