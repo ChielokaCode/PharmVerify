@@ -1,4 +1,6 @@
+import Image from "next/image";
 import React from "react";
+import PharmVerifyLogo from "../../public/img/PharmVerifyLogo.png";
 
 const Footer = () => {
   return (
@@ -10,16 +12,19 @@ const Footer = () => {
               href="https://pharmverify.vercel.app/"
               className="flex items-center"
             >
-              {/* <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-8 me-3"
-                alt="FlowBite Logo"
-              /> */}
+              <Image
+                src={PharmVerifyLogo}
+                className="-mr-3" // Change `me-3` to `mr-3` for TailwindCSS
+                width={120}
+                height={120}
+                alt="PharmVerify Logo"
+              />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 PharmVerify
               </span>
             </a>
           </div>
+
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
