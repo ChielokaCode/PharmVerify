@@ -16,6 +16,7 @@ const PacketForm = ({ id }) => {
   const [expirationDate, setExpirationDate] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
 
   // Toggle function to show/hide form
   const toggleForm = () => setShowForm(!showForm);
@@ -59,7 +60,7 @@ const PacketForm = ({ id }) => {
       toast.error("Please connect your Wallet!");
       return;
     }
-
+    setLoading(true);
     try {
       // Call the contract's addManufacturer function
       await writeContractAsync(
@@ -84,11 +85,13 @@ const PacketForm = ({ id }) => {
               toast.success("Batch added successfully!");
               window.location.reload();
             }
+            setLoading(false);
             console.log("Settled", { data, error });
           },
         }
       );
     } catch (error) {
+      setLoading(false);
       console.error("Transaction failed:", error);
     }
   };
@@ -104,130 +107,136 @@ const PacketForm = ({ id }) => {
       </button>
 
       {/* Form visibility is controlled by the state */}
-      {showForm && (
-        <form className="mt-4 bg-gray-100 p-4 rounded-md shadow-md">
-          {/* Batch Number */}
-
-          <div className="mb-4">
-            <label
-              htmlFor="batchNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Batch Number
-            </label>
-            <input
-              type="text"
-              id="batchNumber"
-              name="batchNumber"
-              value={batchNo}
-              onChange={(e) => {
-                setBatchNo(e.target.value);
-                validateForm(); // Validate whenever input changes
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter batch number"
-            />
+      {showForm &&
+        (loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-indigo-600"></div>
+            <span className="ml-2 text-indigo-600">Processing...</span>
           </div>
+        ) : (
+          <form className="mt-4 bg-gray-100 p-4 rounded-md shadow-md">
+            {/* Batch Number */}
 
-          {/* Batch Quantity */}
-          <div className="mb-4">
-            <label
-              htmlFor="batchQuantity"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Batch Quantity
-            </label>
-            <input
-              type="number"
-              id="batchQuantity"
-              name="batchQuantity"
-              value={batchQuantity}
-              onChange={(e) => {
-                setBatchQuantity(e.target.value);
-                validateForm(); // Validate whenever input changes
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter batch number"
-            />
-          </div>
-
-          {/* Manufacture Date */}
-          <div className="mb-4">
-            <label
-              htmlFor="manufactureDate"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Manufacture Date
-            </label>
-            <input
-              type="text"
-              id="manufactureDate"
-              name="manufactureDate"
-              value={manufactureDate}
-              onChange={(e) => {
-                setManufactureDate(e.target.value);
-                validateForm(); // Validate whenever input changes
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="expirationDate"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Expiration Date
-            </label>
-            <input
-              type="text"
-              id="expirationDate"
-              name="expirationDate"
-              value={expirationDate}
-              onChange={(e) => {
-                setExpirationDate(e.target.value);
-                validateForm(); // Validate whenever input changes
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <Field className="flex gap-x-4 sm:col-span-2">
-            <div className="flex h-6 items-center">
-              <Switch
-                checked={agreed}
-                onChange={(value) => {
-                  setAgreed(value); // Update the state when switch changes
-                  validateForm(); // Optional: validate form if needed
-                }}
-                className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
+            <div className="mb-4">
+              <label
+                htmlFor="batchNumber"
+                className="block text-sm font-medium text-gray-700"
               >
-                <span className="sr-only">Agree to policies</span>
-                <span
-                  aria-hidden="true"
-                  className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
-                />
-              </Switch>
+                Batch Number
+              </label>
+              <input
+                type="text"
+                id="batchNumber"
+                name="batchNumber"
+                value={batchNo}
+                onChange={(e) => {
+                  setBatchNo(e.target.value);
+                  validateForm(); // Validate whenever input changes
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter batch number"
+              />
             </div>
-            <Label className="text-sm leading-6 text-gray-600">
-              By selecting this, you agree to our{" "}
-              <a href="#" className="font-semibold text-indigo-600">
-                terms and conditions
-              </a>
-              .
-            </Label>
-          </Field>
 
-          {/* Button to submit the form */}
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            <i class="fa fa-address-book-o" aria-hidden="true"></i>Add Packet
-          </button>
-        </form>
-      )}
+            {/* Batch Quantity */}
+            <div className="mb-4">
+              <label
+                htmlFor="batchQuantity"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Batch Quantity
+              </label>
+              <input
+                type="number"
+                id="batchQuantity"
+                name="batchQuantity"
+                value={batchQuantity}
+                onChange={(e) => {
+                  setBatchQuantity(e.target.value);
+                  validateForm(); // Validate whenever input changes
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter batch number"
+              />
+            </div>
+
+            {/* Manufacture Date */}
+            <div className="mb-4">
+              <label
+                htmlFor="manufactureDate"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Manufacture Date
+              </label>
+              <input
+                type="text"
+                id="manufactureDate"
+                name="manufactureDate"
+                value={manufactureDate}
+                onChange={(e) => {
+                  setManufactureDate(e.target.value);
+                  validateForm(); // Validate whenever input changes
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="expirationDate"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Expiration Date
+              </label>
+              <input
+                type="text"
+                id="expirationDate"
+                name="expirationDate"
+                value={expirationDate}
+                onChange={(e) => {
+                  setExpirationDate(e.target.value);
+                  validateForm(); // Validate whenever input changes
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <Field className="flex gap-x-4 sm:col-span-2">
+              <div className="flex h-6 items-center">
+                <Switch
+                  checked={agreed}
+                  onChange={(value) => {
+                    setAgreed(value); // Update the state when switch changes
+                    validateForm(); // Optional: validate form if needed
+                  }}
+                  className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
+                >
+                  <span className="sr-only">Agree to policies</span>
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
+                  />
+                </Switch>
+              </div>
+              <Label className="text-sm leading-6 text-gray-600">
+                By selecting this, you agree to our{" "}
+                <a href="#" className="font-semibold text-indigo-600">
+                  terms and conditions
+                </a>
+                .
+              </Label>
+            </Field>
+
+            {/* Button to submit the form */}
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              <i class="fa fa-address-book-o" aria-hidden="true"></i>Add Packet
+            </button>
+          </form>
+        ))}
     </div>
   );
 };

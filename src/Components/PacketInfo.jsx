@@ -9,6 +9,7 @@ const PacketInfo = ({ id }) => {
   const { isConnected } = useAccount();
   const account = useAccount();
   const { writeContractAsync } = useWriteContract();
+  const [loading, setLoading] = useState(false); // Loading state
 
   const getBatchForProductAbi = parseAbi([
     "function getBatchesForProduct(address,uint256) view returns ((uint256,string[],string,uint256,string,uint256,string,string)[])",
@@ -83,7 +84,7 @@ const PacketInfo = ({ id }) => {
                           toast.error("Please connect your Wallet!");
                           return;
                         }
-
+                        setLoading(true);
                         try {
                           await writeContractAsync(
                             {
@@ -103,18 +104,27 @@ const PacketInfo = ({ id }) => {
                                     "Unique Codes generated successfully!"
                                   );
                                 }
+                                setLoading(false);
                                 console.log("Settled", { data, error });
                               },
                             }
                           );
                         } catch (error) {
+                          setLoading(false);
                           console.error("Transaction failed", error);
                         }
                       }}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
                       <i className="fa fa-address-book-o" aria-hidden="true" />
-                      Generate Codes
+                      {loading ? (
+                        <div className="flex justify-center items-center h-64">
+                          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-indigo-600"></div>
+                          <span className="ml-2 text-white">Processing...</span>
+                        </div>
+                      ) : (
+                        <span>Generate Codes</span>
+                      )}
                     </button>
                   </td>
                 </tr>

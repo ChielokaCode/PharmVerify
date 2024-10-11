@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -49,10 +50,12 @@ const Hero = () => {
 
         {/* Image Section: hidden on smaller screens */}
         <div className="hidden lg:flex lg:w-1/2">
-          <img
-            src="https://via.placeholder.com/400"
-            alt="Drug Image"
+          <Image
+            src="/img/SmilingGirlWithDrug.jpeg"
+            alt="A smiling girl with a drug"
             className="w-full h-auto object-cover rounded-lg"
+            width={500} // Specify the width
+            height={500} // Specify the height
           />
         </div>
       </div>

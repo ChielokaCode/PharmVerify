@@ -10,6 +10,11 @@ import {
 import Link from "next/link";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Wallet, ConnectWallet } from "@coinbase/onchainkit/wallet";
+import { Avatar, Name } from "@coinbase/onchainkit/identity";
+import { Basenames } from "../basename";
+import { useAccount } from "wagmi";
+// import { ConnectButton } from "../ConnectButton";
 
 const navigation = [
   { name: "Home", href: "/#home", current: true },
@@ -23,7 +28,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Header() {
+const Header = () => {
+  const { address } = useAccount();
   return (
     <Disclosure as="nav" className="bg-gray-800 z-50 relative">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -87,6 +93,13 @@ export default function Header() {
             <br />
             {/* Profile dropdown */}
             <ConnectButton />
+
+            {/* <Wallet>
+              <ConnectWallet>
+                <Avatar className="h-6 w-6" />
+                <Name />
+              </ConnectWallet>
+            </Wallet> */}
           </div>
         </div>
       </div>
@@ -113,4 +126,6 @@ export default function Header() {
       </DisclosurePanel>
     </Disclosure>
   );
-}
+};
+
+export default Header;

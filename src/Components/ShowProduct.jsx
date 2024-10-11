@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import PacketForm from "./PacketForm";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
-import { pharmVerifyContract } from "../context/pharmVerifyContract";
-import { parseAbi } from "viem";
-import toast from "react-hot-toast";
-
-import ViewCodesModal from "./ViewCodesModal";
-import ToggleModalButton from "./ToggleModalButton";
 import PacketInfo from "./PacketInfo";
+import Image from "next/image";
 
 const ShowProduct = ({ products }) => {
   // Check if products is undefined or null
@@ -109,13 +104,16 @@ const ShowProduct = ({ products }) => {
             {/* Product Images */}
             <h3 className="text-lg font-bold mt-6 mb-2">Product Image</h3>
             <div className="flex space-x-4">
-              {productImage && productImage.length > 0 ? (
-                <img
-                  key={productId}
-                  src={productImage}
-                  alt={`Product ${productId}`}
-                  className="w-32 h-32 object-cover"
-                />
+              <span>Click to view Product Image</span>
+              {productImage ? (
+                <a
+                  href={productImage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-blue-400"
+                >
+                  View Product Image
+                </a>
               ) : (
                 <p>No image available.</p>
               )}

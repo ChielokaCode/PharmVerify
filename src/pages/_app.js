@@ -3,6 +3,7 @@ dotenv.config();
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { OnchainKitProvider } from "@coinbase/onchainkit";
 import {
   getDefaultConfig,
   RainbowKitProvider,
@@ -19,31 +20,38 @@ import {
   holesky,
 } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { wagmiConfig } from "../wagmi";
 
 // import { TOKEN_ICO_Provider } from "../context/index";
 
 const config = getDefaultConfig({
   appName: "PharmVerify Dapp",
   projectId: "ba2493924d886268c979af445bdc48e8",
-  chains: [baseSepolia],
+  chains: [base, baseSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
 const queryClient = new QueryClient();
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   return (
     <>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            {/* <TOKEN_ICO_Provider> */}
-            <Component {...pageProps} />
-            <Toaster />
-            {/* </TOKEN_ICO_Provider> */}
+            <OnchainKitProvider
+              client={queryClient}
+              apiKey={"QVnPT0XROesIx8BFkjAETLpULlnb6rxG"}
+              chain={baseSepolia}
+            >
+              <Component {...pageProps} />
+              <Toaster />
+            </OnchainKitProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </>
   );
-}
+};
+
+export default App;

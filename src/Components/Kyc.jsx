@@ -22,6 +22,8 @@ const Kyc = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
+  const [loading, setLoading] = useState(false); // Loading state
+
   const { writeContractAsync } = useWriteContract();
   const account = useAccount();
   const { isConnected } = useAccount();
@@ -65,6 +67,7 @@ const Kyc = () => {
       return;
     }
 
+    setLoading(true);
     try {
       // Call the contract's addManufacturer function
       await writeContractAsync(
@@ -94,11 +97,13 @@ const Kyc = () => {
               toast.success("Manufacturer added successfully!");
               router.push("/dashboard/addProduct");
             }
+            setLoading(false);
             console.log("Settled", { data, error });
           },
         }
       );
     } catch (err) {
+      setLoading(false);
       console.error("Transaction failed:", err);
     }
   };
@@ -130,279 +135,287 @@ const Kyc = () => {
           All registration is subject to inspection before confirmation.
         </p>
       </div>
-      <form
-        action="#"
-        method="POST"
-        className="mx-auto mt-16 max-w-xl sm:mt-20"
-      >
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-          {/* Manufacturer Name */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="manufacturer-name"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Manufacturer Business Name{" "}
-              <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="manufacturer-name"
-                name="manufacturer-name"
-                type="text"
-                value={manufacturerName}
-                onChange={(e) => {
-                  setManufacturerName(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* License Number */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="license-number"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Manufacturer License Number{" "}
-              <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="license-number"
-                name="license-number"
-                type="text"
-                value={licenseNumber}
-                onChange={(e) => {
-                  setLicenseNumber(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Business Registration Number */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="business-reg-number"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Business Registration Number{" "}
-              <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="business-reg-number"
-                name="business-reg-number"
-                type="text"
-                value={businessRegNo}
-                onChange={(e) => {
-                  setBusinessRegNo(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Address */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="address"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Company Address <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="address"
-                name="address"
-                type="text"
-                value={companyAddress}
-                onChange={(e) => {
-                  setCompanyAddress(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Phone Number */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="phonenumber"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Company Phone number{" "}
-              <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="phonenumber"
-                name="phonenumber"
-                type="text"
-                value={companyPhoneNo}
-                onChange={(e) => {
-                  setCompanyPhoneNo(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Company Email */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Company Email <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="email"
-                name="email"
-                type="text"
-                value={companyEmail}
-                onChange={(e) => {
-                  setCompanyEmail(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Country */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="country"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Country <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="country"
-                name="country"
-                type="text"
-                value={companyCountry}
-                onChange={(e) => {
-                  setCompanyCountry(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Certification */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="certification"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Certification (e.g., GMP, ISO){" "}
-              <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="certification"
-                name="certification"
-                type="text"
-                value={companyCertification}
-                onChange={(e) => {
-                  setCompanyCertification(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Regulatory Body */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="regulatory-body"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Regulatory Body <span className="text-red-600 text-sm">*</span>
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="regulatory-body"
-                name="regulatory-body"
-                type="text"
-                value={companyRegulatoryBody}
-                onChange={(e) => {
-                  setCompanyRegulatoryBody(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          {/* Document Upload */}
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="documents"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Upload Licenses and Certifications
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="documents"
-                name="documents"
-                type="file"
-                className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          <Field className="flex gap-x-4 sm:col-span-2">
-            <div className="flex h-6 items-center">
-              <Switch
-                checked={agreed}
-                onChange={(value) => {
-                  setAgreed(value); // Update the state when switch changes
-                  validateForm(); // Optional: validate form if needed
-                }}
-                className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
+      {/* Show loading screen */}
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-indigo-600"></div>
+          <span className="ml-2 text-indigo-600">Processing...</span>
+        </div>
+      ) : (
+        <form
+          action="#"
+          method="POST"
+          className="mx-auto mt-16 max-w-xl sm:mt-20"
+        >
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            {/* Manufacturer Name */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="manufacturer-name"
+                className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                <span className="sr-only">Agree to policies</span>
-                <span
-                  aria-hidden="true"
-                  className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
+                Manufacturer Business Name{" "}
+                <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="manufacturer-name"
+                  name="manufacturer-name"
+                  type="text"
+                  value={manufacturerName}
+                  onChange={(e) => {
+                    setManufacturerName(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
-              </Switch>
+              </div>
             </div>
-            <Label className="text-sm leading-6 text-gray-600">
-              By selecting this, you agree to our{" "}
-              <a href="#" className="font-semibold text-indigo-600">
-                terms and conditions
-              </a>
-              .
-            </Label>
-          </Field>
-        </div>
 
-        <div className="mt-10">
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white"
-          >
-            Register Manufacturer
-          </button>
-        </div>
-      </form>
+            {/* License Number */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="license-number"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Manufacturer License Number{" "}
+                <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="license-number"
+                  name="license-number"
+                  type="text"
+                  value={licenseNumber}
+                  onChange={(e) => {
+                    setLicenseNumber(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Business Registration Number */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="business-reg-number"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Business Registration Number{" "}
+                <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="business-reg-number"
+                  name="business-reg-number"
+                  type="text"
+                  value={businessRegNo}
+                  onChange={(e) => {
+                    setBusinessRegNo(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Address */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="address"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Company Address <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  value={companyAddress}
+                  onChange={(e) => {
+                    setCompanyAddress(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Phone Number */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="phonenumber"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Company Phone number{" "}
+                <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="phonenumber"
+                  name="phonenumber"
+                  type="text"
+                  value={companyPhoneNo}
+                  onChange={(e) => {
+                    setCompanyPhoneNo(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Company Email */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Company Email <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="email"
+                  name="email"
+                  type="text"
+                  value={companyEmail}
+                  onChange={(e) => {
+                    setCompanyEmail(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Country */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="country"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Country <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="country"
+                  name="country"
+                  type="text"
+                  value={companyCountry}
+                  onChange={(e) => {
+                    setCompanyCountry(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Certification */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="certification"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Certification (e.g., GMP, ISO){" "}
+                <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="certification"
+                  name="certification"
+                  type="text"
+                  value={companyCertification}
+                  onChange={(e) => {
+                    setCompanyCertification(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Regulatory Body */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="regulatory-body"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Regulatory Body <span className="text-red-600 text-sm">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="regulatory-body"
+                  name="regulatory-body"
+                  type="text"
+                  value={companyRegulatoryBody}
+                  onChange={(e) => {
+                    setCompanyRegulatoryBody(e.target.value);
+                    validateForm(); // Validate whenever input changes
+                  }}
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* Document Upload */}
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="documents"
+                className="block text-sm font-semibold leading-6 text-gray-900"
+              >
+                Upload Licenses and Certifications
+              </label>
+              <div className="mt-2.5">
+                <input
+                  id="documents"
+                  name="documents"
+                  type="file"
+                  className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            <Field className="flex gap-x-4 sm:col-span-2">
+              <div className="flex h-6 items-center">
+                <Switch
+                  checked={agreed}
+                  onChange={(value) => {
+                    setAgreed(value); // Update the state when switch changes
+                    validateForm(); // Optional: validate form if needed
+                  }}
+                  className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
+                >
+                  <span className="sr-only">Agree to policies</span>
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
+                  />
+                </Switch>
+              </div>
+              <Label className="text-sm leading-6 text-gray-600">
+                By selecting this, you agree to our{" "}
+                <a href="#" className="font-semibold text-indigo-600">
+                  terms and conditions
+                </a>
+                .
+              </Label>
+            </Field>
+          </div>
+
+          <div className="mt-10">
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white"
+            >
+              Register Manufacturer
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

@@ -20,7 +20,9 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/_app.js",
-    "src/pages/index.jsx"
+    "src/pages/index.jsx",
+    "src/ConnectButton.jsx",
+    "src/basename.jsx"
   ],
   "exclude": ["node_modules"]
 }

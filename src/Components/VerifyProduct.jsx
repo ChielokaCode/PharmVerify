@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useAccount, useReadContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
+import Image from "next/image";
 
 const VerifyProduct = ({ code }) => {
   const { isConnected } = useAccount();
@@ -87,15 +88,29 @@ const VerifyProduct = ({ code }) => {
                 <tr key={index} className="hover:bg-gray-100">
                   <td className="py-2 px-4 border-b border-gray-300">{key}</td>
                   <td className="py-2 px-4 border-b border-gray-300">
-                    {typeof value === "string" &&
-                    (value.endsWith(".png") ||
+                    {typeof value === "string" ? (
+                      value.endsWith(".png") ||
                       value.endsWith(".jpg") ||
-                      value.endsWith(".jpeg")) ? (
-                      <img
-                        src={value}
-                        alt={key}
-                        className="w-24 h-24 object-cover"
-                      />
+                      value.endsWith(".jpeg") ? (
+                        <Image
+                          src={value}
+                          alt={key}
+                          width={100}
+                          height={100}
+                          className="w-24 h-24 object-cover"
+                        />
+                      ) : value.includes("github") ? (
+                        <a
+                          href={value}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline text-blue-500"
+                        >
+                          View Product Image
+                        </a>
+                      ) : (
+                        value
+                      )
                     ) : (
                       value
                     )}
