@@ -15,6 +15,8 @@ import { WagmiProvider } from "wagmi";
 import { base, baseSepolia } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { config } from "../wagmi";
+import PharmVerifyIcon from "../../public/img/PharmVerifyLogo.png";
+import Head from "next/head";
 
 // const config = getDefaultConfig({
 //   appName: "PharmVerify Dapp",
@@ -29,6 +31,10 @@ const App = ({ Component, pageProps }) => {
   // const config = useWagmiConfig();
   return (
     <>
+      <Head>
+        <title>PharmVerify</title>
+        <meta name="description" content="Welcome to PharmVerify" />
+      </Head>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
