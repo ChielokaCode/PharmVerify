@@ -75,7 +75,7 @@ const Header = () => {
 
             {/* Navigation Links */}
             <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4 mt-2">
+              <div className="flex space-x-4 mt-11">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
