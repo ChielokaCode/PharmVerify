@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "^0.33.5",
+    "@coinbase/onchainkit": "^0.33.6",
     "@coinbase/wallet-sdk": "^4.1.0",
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",

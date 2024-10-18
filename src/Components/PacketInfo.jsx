@@ -3,6 +3,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 import toast from "react-hot-toast";
+import { ethers } from "ethers";
 
 const PacketInfo = ({ id }) => {
   const [batch, setBatch] = useState([]);
@@ -96,9 +97,7 @@ const PacketInfo = ({ id }) => {
                             {
                               onSettled(data, error) {
                                 if (error) {
-                                  toast.error(
-                                    `Transaction failed : ${error.cause?.reason}`
-                                  );
+                                  toast.error("Transaction failed");
                                 } else {
                                   toast.success(
                                     "Unique Codes generated successfully!"
@@ -133,7 +132,7 @@ const PacketInfo = ({ id }) => {
           </tbody>
         </table>
       ) : (
-        <p>No packets available.</p>
+        <p>No Batch available.</p>
       )}
     </div>
   );

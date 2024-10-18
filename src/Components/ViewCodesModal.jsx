@@ -103,10 +103,10 @@ const ViewCodesModal = ({ isOpen, toggleModal, batch }) => {
                     </svg>
                   </span>
                   <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                    Flowbite Figma v2.8.0
+                    PharmVerify
                   </h3>
                   <time className="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                    Released on Oct 7th, 2023
+                    Released 2024
                   </time>
                   <button
                     type="button"

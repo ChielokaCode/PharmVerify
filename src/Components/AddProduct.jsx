@@ -167,6 +167,7 @@ const AddProduct = () => {
                     setProductName(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="paracetamol"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -191,6 +192,7 @@ const AddProduct = () => {
                     setProductNafdacNo(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g, A4-1234"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -214,6 +216,7 @@ const AddProduct = () => {
                     setProductForm(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g., Tablet, Syrup"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -238,6 +241,7 @@ const AddProduct = () => {
                     setActiveIngredients(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g., Paracetamol"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -261,6 +265,7 @@ const AddProduct = () => {
                     setDosageStrength(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g., 500mg"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -284,6 +289,7 @@ const AddProduct = () => {
                     setPackagingType(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g., Blister Pack, Bottle"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -308,6 +314,7 @@ const AddProduct = () => {
                     setStorageConditions(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="e.g., Store below 25°C"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -332,6 +339,7 @@ const AddProduct = () => {
                     setProductImages(e.target.value);
                     validateForm(); // Validate whenever input changes
                   }}
+                  placeholder="URL of product images"
                   className="block w-full rounded-md border border-gray-300 px-3.5 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -343,7 +351,7 @@ const AddProduct = () => {
                 htmlFor="documents"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Upload Licenses and Certifications
+                Upload Licenses and Certifications (PDF, JPEG, PNG)
               </label>
               <div className="mt-2.5">
                 <input

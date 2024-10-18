@@ -1,8 +1,10 @@
+"use client";
 import dotenv from "dotenv";
 dotenv.config();
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import "@coinbase/onchainkit/styles.css";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import {
   getDefaultConfig,
@@ -10,44 +12,34 @@ import {
   darkTheme,
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  baseSepolia,
-  holesky,
-} from "wagmi/chains";
+import { base, baseSepolia } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { wagmiConfig } from "../wagmi";
+import { config } from "../wagmi";
 
-// import { TOKEN_ICO_Provider } from "../context/index";
-
-const config = getDefaultConfig({
-  appName: "PharmVerify Dapp",
-  projectId: "ba2493924d886268c979af445bdc48e8",
-  chains: [base, baseSepolia],
-  ssr: true, // If your dApp uses server side rendering (SSR)
-});
+// const config = getDefaultConfig({
+//   appName: "PharmVerify Dapp",
+//   projectId: "ba2493924d886268c979af445bdc48e8",
+//   chains: [base, baseSepolia],
+//   ssr: true, // If your dApp uses server side rendering (SSR)
+// });
 
 const queryClient = new QueryClient();
 
 const App = ({ Component, pageProps }) => {
+  // const config = useWagmiConfig();
   return (
     <>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider>
-            <OnchainKitProvider
-              client={queryClient}
-              apiKey={"QVnPT0XROesIx8BFkjAETLpULlnb6rxG"}
-              chain={baseSepolia}
-            >
+          <OnchainKitProvider
+            apiKey="sCjIRMpZIJTfPBBay3i3wAhMirdM5qV_"
+            chain={base}
+          >
+            <RainbowKitProvider>
               <Component {...pageProps} />
               <Toaster />
-            </OnchainKitProvider>
-          </RainbowKitProvider>
+            </RainbowKitProvider>
+          </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </>

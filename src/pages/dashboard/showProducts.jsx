@@ -10,8 +10,9 @@ const showProducts = () => {
   const account = useAccount();
   const { isConnected } = useAccount();
   const [product, setProduct] = useState([]);
+
   const abi = parseAbi([
-    `function getAllProductsByManufacturer(address) returns ((uint256, string, string, string, string, string, string, string, string, string, string, (uint256, string[], string, uint256, string, string)[], bool)[])`,
+    `function getAllProductsByManufacturer(address) returns ((uint256, string, string, string, string, string, string,address, string, string, string,string, (uint256, string[], string, uint256, string, string)[], bool)[])`,
   ]);
 
   const manufacturerAddress = account.address;
@@ -31,6 +32,7 @@ const showProducts = () => {
     }
 
     if (result.error) {
+      console.error(`${result.error.message}`);
       toast.error(`Transaction failed: ${result.error.message}`);
     }
   }, [result.data, result.error]);

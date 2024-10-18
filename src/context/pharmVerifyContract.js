@@ -1,5 +1,5 @@
 export const pharmVerifyContract = {
-  address: "0x137bAF3d0F3739D0d082D6FD0f40C6B54bd07e76",
+  address: "0xaBCe1F721DCb02EDE036696ab407eC539dDF7E11",
   abi: [
     {
       inputs: [{ internalType: "address", name: "_owner", type: "address" }],
@@ -7,74 +7,15 @@ export const pharmVerifyContract = {
       type: "constructor",
     },
     {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "string",
-          name: "message",
-          type: "string",
-        },
-      ],
-      name: "BatchAdded",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        { indexed: true, internalType: "uint256", name: "i", type: "uint256" },
-        {
-          indexed: false,
-          internalType: "string",
-          name: "randomStr",
-          type: "string",
-        },
-      ],
-      name: "DebugRandomValue",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "string",
-          name: "message",
-          type: "string",
-        },
-      ],
-      name: "ManufacturerAdded",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "string",
-          name: "message",
-          type: "string",
-        },
-      ],
-      name: "PacketUniqueCodesGenerated",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "string",
-          name: "message",
-          type: "string",
-        },
-      ],
-      name: "ProductAdded",
-      type: "event",
+      inputs: [],
+      name: "_batchCounter",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
     },
     {
       inputs: [],
-      name: "_batchCounter",
+      name: "_issueReportCounter",
       outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
       stateMutability: "view",
       type: "function",
@@ -176,7 +117,7 @@ export const pharmVerifyContract = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "string", name: "_packetCode", type: "string" }],
+      inputs: [{ internalType: "string", name: "packetCode", type: "string" }],
       name: "extractBatchNumber",
       outputs: [{ internalType: "string", name: "", type: "string" }],
       stateMutability: "pure",
@@ -258,8 +199,13 @@ export const pharmVerifyContract = {
                 },
                 {
                   internalType: "string",
-                  name: "manufacturerAddress",
+                  name: "companyAddress",
                   type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "manufacturerAddress",
+                  type: "address",
                 },
                 {
                   internalType: "string",
@@ -331,6 +277,29 @@ export const pharmVerifyContract = {
               type: "tuple[]",
             },
             { internalType: "bool", name: "isRegistered", type: "bool" },
+            {
+              components: [
+                { internalType: "uint256", name: "id", type: "uint256" },
+                {
+                  internalType: "address",
+                  name: "userAddress",
+                  type: "address",
+                },
+                { internalType: "string", name: "userName", type: "string" },
+                { internalType: "string", name: "location", type: "string" },
+                { internalType: "string", name: "issue", type: "string" },
+                { internalType: "string", name: "productName", type: "string" },
+                {
+                  internalType: "string",
+                  name: "productBatchNumber",
+                  type: "string",
+                },
+                { internalType: "uint256", name: "timestamp", type: "uint256" },
+              ],
+              internalType: "struct YourContract.IssueReport[]",
+              name: "reports",
+              type: "tuple[]",
+            },
           ],
           internalType: "struct YourContract.Manufacturer[]",
           name: "",
@@ -366,10 +335,11 @@ export const pharmVerifyContract = {
               name: "manufacturerName",
               type: "string",
             },
+            { internalType: "string", name: "companyAddress", type: "string" },
             {
-              internalType: "string",
+              internalType: "address",
               name: "manufacturerAddress",
-              type: "string",
+              type: "address",
             },
             { internalType: "string", name: "dosageStrength", type: "string" },
             { internalType: "string", name: "packagingType", type: "string" },
@@ -495,6 +465,39 @@ export const pharmVerifyContract = {
           name: "_manufacturerAddress",
           type: "address",
         },
+      ],
+      name: "getManufacturerIssues",
+      outputs: [
+        {
+          components: [
+            { internalType: "uint256", name: "id", type: "uint256" },
+            { internalType: "address", name: "userAddress", type: "address" },
+            { internalType: "string", name: "userName", type: "string" },
+            { internalType: "string", name: "location", type: "string" },
+            { internalType: "string", name: "issue", type: "string" },
+            { internalType: "string", name: "productName", type: "string" },
+            {
+              internalType: "string",
+              name: "productBatchNumber",
+              type: "string",
+            },
+            { internalType: "uint256", name: "timestamp", type: "uint256" },
+          ],
+          internalType: "struct YourContract.IssueReport[]",
+          name: "",
+          type: "tuple[]",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_manufacturerAddress",
+          type: "address",
+        },
         { internalType: "string", name: "_batchNumber", type: "string" },
       ],
       name: "getPacketUniqueCodesForBatch",
@@ -507,6 +510,25 @@ export const pharmVerifyContract = {
       name: "owner",
       outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_manufacturerAddress",
+          type: "address",
+        },
+        { internalType: "address", name: "_userAddress", type: "address" },
+        { internalType: "string", name: "_userName", type: "string" },
+        { internalType: "string", name: "_location", type: "string" },
+        { internalType: "string", name: "_issue", type: "string" },
+        { internalType: "string", name: "_productName", type: "string" },
+        { internalType: "string", name: "_productBatchNumber", type: "string" },
+      ],
+      name: "reportIssue",
+      outputs: [{ internalType: "string", name: "", type: "string" }],
+      stateMutability: "nonpayable",
       type: "function",
     },
     {
@@ -527,10 +549,11 @@ export const pharmVerifyContract = {
               name: "manufacturerName",
               type: "string",
             },
+            { internalType: "string", name: "companyAddress", type: "string" },
             {
-              internalType: "string",
+              internalType: "address",
               name: "manufacturerAddress",
-              type: "string",
+              type: "address",
             },
             {
               internalType: "string",

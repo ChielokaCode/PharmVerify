@@ -17,6 +17,8 @@ import ToggleModalButton from "./ToggleModalButton";
 import VerifyProduct from "./VerifyProduct";
 import PacketInfo from "./PacketInfo";
 import ShowUniqueCodes from "./ShowUniqueCodes";
+import ReportIssue from "./ReportIssue";
+import ViewIssues from "./ViewIssues";
 
 export {
   Header,
@@ -38,4 +40,6 @@ export {
   VerifyProduct,
   PacketInfo,
   ShowUniqueCodes,
+  ReportIssue,
+  ViewIssues,
 };

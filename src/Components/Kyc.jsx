@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
 import toast from "react-hot-toast";
 import { useAccount, useWriteContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 import { useRouter } from "next/router";
+import { useCapabilities, useWriteContracts } from "wagmi/experimental";
+import { config, useWagmiConfig } from "../wagmi";
 
 const Kyc = () => {
   const [manufacturerName, setManufacturerName] = useState("");
@@ -24,7 +26,15 @@ const Kyc = () => {
 
   const [loading, setLoading] = useState(false); // Loading state
 
+  // const wagmiConfig = useWagmiConfig();
+
   const { writeContractAsync } = useWriteContract();
+  // const [id, setId] = useState(undefined);
+
+  // const { writeContracts } = useWriteContracts({
+  //   mutation: { onSuccess: (id) => setId(id) },
+  // });
+
   const account = useAccount();
   const { isConnected } = useAccount();
   const abi = parseAbi([
@@ -32,6 +42,25 @@ const Kyc = () => {
   ]);
 
   const router = useRouter();
+
+  // const { data: availableCapabilities } = useCapabilities({
+  //   account: account.address,
+  // });
+
+  // const capabilities = useMemo(() => {
+  //   if (!availableCapabilities || !account.chainId) return;
+  //   const capabilitiesForChain = availableCapabilities[account.chainId];
+  //   if (
+  //     capabilitiesForChain["paymasterService"] &&
+  //     capabilitiesForChain["paymasterService"].supported
+  //   ) {
+  //     return {
+  //       paymasterService: {
+  //         url: "https://api.developer.coinbase.com/rpc/v1/base-sepolia/sCjIRMpZIJTfPBBay3i3wAhMirdM5qV_",
+  //       },
+  //     };
+  //   }
+  // }, [availableCapabilities, account.chainId]);
 
   // Function to validate form fields
   const validateForm = () => {
@@ -106,6 +135,50 @@ const Kyc = () => {
       setLoading(false);
       console.error("Transaction failed:", err);
     }
+
+    //The below is configuration for smart wallet
+    // try {
+    //   writeContracts(
+    //     {
+    //       contracts: [
+    //         {
+    //           address: pharmVerifyContract.address,
+    //           abi: abi,
+    //           functionName: "addManufacturer",
+    //           args: [
+    //             account.address,
+    //             manufacturerName,
+    //             licenseNumber,
+    //             businessRegNo,
+    //             companyAddress,
+    //             companyPhoneNo,
+    //             companyEmail,
+    //             companyCountry,
+    //             companyCertification,
+    //             companyRegulatoryBody,
+    //           ],
+    //         },
+    //       ],
+    //       capabilities,
+    //     },
+    //     {
+    //       onSettled(data, error) {
+    //         if (error) {
+    //           toast.error("Connect to a Smart Wallet to continue");
+    //           console.log(error);
+    //         } else {
+    //           toast.success("Manufacturer added successfully!");
+    //           router.push("/dashboard/addProduct");
+    //         }
+    //         setLoading(false);
+    //         console.log("Settled", { data, error });
+    //       },
+    //     }
+    //   );
+    // } catch (err) {
+    //   setLoading(false);
+    //   console.error("Transaction failed:", err);
+    // }
   };
 
   return (
@@ -343,7 +416,8 @@ const Kyc = () => {
                 htmlFor="regulatory-body"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Regulatory Body <span className="text-red-600 text-sm">*</span>
+                Regulatory Body (e.g., FDA, MHRA){" "}
+                <span className="text-red-600 text-sm">*</span>
               </label>
               <div className="mt-2.5">
                 <input
@@ -366,7 +440,7 @@ const Kyc = () => {
                 htmlFor="documents"
                 className="block text-sm font-semibold leading-6 text-gray-900"
               >
-                Upload Licenses and Certifications
+                Upload Licenses and Certifications (PDF, JPEG, PNG)
               </label>
               <div className="mt-2.5">
                 <input

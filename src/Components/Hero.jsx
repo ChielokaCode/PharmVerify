@@ -18,7 +18,7 @@ const Hero = () => {
         />
       </div>
 
-      <div className="mx-auto max-w-full py-32 sm:py-48 lg:py-14 flex flex-col lg:flex-row items-stretch">
+      <div className="mx-auto max-w-full py-32 sm:py-48 lg:py-14 flex flex-row md:flex-row items-stretch">
         {/* Text Section */}
         <div className="text-center lg:text-left lg:w-1/2 flex flex-col justify-center px-6 lg:px-0">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
@@ -26,10 +26,10 @@ const Hero = () => {
               Stay Safe, Buy Genuine Pharmaceutical Products
             </div>
           </div>
-          <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl md:text-left">
             Instantly Verify Your Medicine’s Authenticity with One Scan!!!
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-gray-600 md:text-left">
             Combat the threat of counterfeit drugs in the market. Our
             decentralized application empowers consumers to verify the
             authenticity of medications with a QR code scanner. Each
@@ -37,11 +37,11 @@ const Hero = () => {
             transparency and trust in pharmaceutical products.
           </p>
 
-          <div className="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
+          <div className="mt-10 flex justify-center md:justify-start gap-x-6">
             <Link
               href="register"
               passHref
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md bg-indigo-600 px-5 py-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Get started
             </Link>

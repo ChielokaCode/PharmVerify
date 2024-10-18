@@ -7,13 +7,12 @@ import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 import { Field, Label, Switch } from "@headlessui/react";
 
-const PacketForm = ({ id }) => {
+const ReportIssue = ({ address, productName, productBatchNumber }) => {
   // State to toggle the form visibility
   const [showForm, setShowForm] = useState(false);
-  const [batchNo, setBatchNo] = useState("");
-  const [batchQuantity, setBatchQuantity] = useState(1);
-  const [manufactureDate, setManufactureDate] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
+  const [issue, setIssue] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
@@ -26,16 +25,16 @@ const PacketForm = ({ id }) => {
   const { isConnected } = useAccount();
 
   const abi = parseAbi([
-    "function addBatch(address,uint256,string,uint256,string,string) returns (string)",
+    "function reportIssue(address,address,string,string,string,string,string) returns (string)",
   ]);
 
   // Function to validate form fields
   const validateForm = () => {
     if (
-      batchNo.trim() !== "" &&
-      batchQuantity !== "" &&
-      manufactureDate.trim() !== "" &&
-      expirationDate.trim() !== "" &&
+      username.trim() !== "" &&
+      productName !== "" &&
+      location.trim() !== "" &&
+      issue.trim() !== "" &&
       !agreed
     ) {
       setIsFormValid(true);
@@ -67,14 +66,15 @@ const PacketForm = ({ id }) => {
         {
           address: pharmVerifyContract.address,
           abi: abi,
-          functionName: "addBatch",
+          functionName: "reportIssue",
           args: [
+            address,
             account.address,
-            id,
-            batchNo,
-            batchQuantity,
-            manufactureDate,
-            expirationDate,
+            username,
+            location,
+            issue,
+            productName,
+            productBatchNumber,
           ],
         },
         {
@@ -82,7 +82,7 @@ const PacketForm = ({ id }) => {
             if (error) {
               toast.error(`Transaction failed : ${error.cause?.reason}`);
             } else {
-              toast.success("Batch added successfully!");
+              toast.success("Report Sent Successfully!");
               window.location.reload();
             }
             setLoading(false);
@@ -97,13 +97,17 @@ const PacketForm = ({ id }) => {
   };
 
   return (
-    <div className="mt-6 mb-6">
+    <div className="mt-6 mb-6 ml-6">
+      <h1 className="font-bold text-2xl">Report Issue/Remark</h1>
+      <p className="font-medium text-sm text-red-500 mt-4 mb-4">
+        Do you have a complaint to make to the manufacturer?
+      </p>
       {/* Button to view the packet form */}
       <button
         onClick={toggleForm}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
       >
-        {showForm ? "Hide Batch Form" : "View Batch Form"}
+        {showForm ? "Hide Report Issue Form" : "View Report Issue Form"}
       </button>
 
       {/* Form visibility is controlled by the state */}
@@ -122,19 +126,19 @@ const PacketForm = ({ id }) => {
                 htmlFor="batchNumber"
                 className="block text-sm font-medium text-gray-700"
               >
-                Batch Number
+                Full Name
               </label>
               <input
                 type="text"
                 id="batchNumber"
                 name="batchNumber"
-                value={batchNo}
+                value={username}
                 onChange={(e) => {
-                  setBatchNo(e.target.value);
-                  validateForm();
+                  setUsername(e.target.value);
+                  validateForm(); // Validate whenever input changes
                 }}
-                placeholder="e.g, BN1234"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter Anonymous if you want your identity hidden"
               />
             </div>
 
@@ -144,19 +148,19 @@ const PacketForm = ({ id }) => {
                 htmlFor="batchQuantity"
                 className="block text-sm font-medium text-gray-700"
               >
-                Batch Quantity
+                Location
               </label>
               <input
-                type="number"
+                type="text"
                 id="batchQuantity"
                 name="batchQuantity"
-                value={batchQuantity}
+                value={location}
                 onChange={(e) => {
-                  setBatchQuantity(e.target.value);
-                  validateForm(); // Validate whenever input changes
+                  setLocation(e.target.value);
+                  validateForm();
                 }}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter Batch Quantity"
+                placeholder="Enter Location"
               />
             </div>
 
@@ -166,39 +170,19 @@ const PacketForm = ({ id }) => {
                 htmlFor="manufactureDate"
                 className="block text-sm font-medium text-gray-700"
               >
-                Manufacture Date (e.g yyyy-mm-dd)
+                Issue/Remark
               </label>
-              <input
+              <textarea
                 type="text"
                 id="manufactureDate"
                 name="manufactureDate"
-                value={manufactureDate}
+                rows={3}
+                value={issue}
                 onChange={(e) => {
-                  setManufactureDate(e.target.value);
-                  validateForm(); // Validate whenever input changes
+                  setIssue(e.target.value);
+                  validateForm();
                 }}
-                placeholder="Enter Manufacture date"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="expirationDate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Expiration Date (e.g yyyy-mm-dd)
-              </label>
-              <input
-                type="text"
-                id="expirationDate"
-                name="expirationDate"
-                value={expirationDate}
-                onChange={(e) => {
-                  setExpirationDate(e.target.value);
-                  validateForm(); // Validate whenever input changes
-                }}
-                placeholder="Enter Expiration date"
+                placeholder="Enter issues about the product or remarks for the Manufacturer"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -208,8 +192,8 @@ const PacketForm = ({ id }) => {
                 <Switch
                   checked={agreed}
                   onChange={(value) => {
-                    setAgreed(value); // Update the state when switch changes
-                    validateForm(); // Optional: validate form if needed
+                    setAgreed(value);
+                    validateForm();
                   }}
                   className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
                 >
@@ -235,7 +219,8 @@ const PacketForm = ({ id }) => {
               onClick={handleSubmit}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
-              <i class="fa fa-address-book-o" aria-hidden="true"></i>Add Batch
+              <i class="fa fa-address-book-o" aria-hidden="true"></i>Report
+              Issue/Remark
             </button>
           </form>
         ))}
@@ -243,4 +228,4 @@ const PacketForm = ({ id }) => {
   );
 };
 
-export default PacketForm;
+export default ReportIssue;

@@ -4,13 +4,17 @@ import { useAccount, useReadContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 import Image from "next/image";
+import ReportIssue from "./ReportIssue"; // Make sure to import the ReportIssue component
 
 const VerifyProduct = ({ code }) => {
-  const { isConnected } = useAccount();
-  const [productInfo, setProductInfo] = useState(null); // Initialized to null
+  const { isConnected, address } = useAccount();
+  const [productInfo, setProductInfo] = useState(null);
+  const [manufacturerAddress, setManufacturerAddress] = useState(null);
+  const [productName, setProductName] = useState("");
+  const [productBatchNumber, setProductBatchNumber] = useState("");
 
   const abi = parseAbi([
-    "function searchPacket(string) returns ((string,string,string,string,string,string,string,string,string,string,string,string,string))",
+    "function searchPacket(string) returns ((string,string,string,string,string,string,string,string,string,address,string,string,string,string))",
   ]);
 
   // Use readContract to call the searchPacket function
@@ -34,29 +38,34 @@ const VerifyProduct = ({ code }) => {
         ManufactureDate,
         ExpirationDate,
         ManufacturerName,
+        CompanyAddress,
         ManufacturerAddress,
         StoringCondition,
         ActiveIngredients,
         ProductImage,
         Comment,
-      ] = result.data; // Destructure the array returned from the contract
+      ] = result.data;
 
-      // Map it to your productInfo structure
       setProductInfo({
         ProductName,
         ProductNafdacNo,
         ProductForm,
         DosageStrength,
-        // BatchNumber,
-        // ManufactureDate,
-        // ExpirationDate,
+        BatchNumber,
+        ManufactureDate,
+        ExpirationDate,
         ManufacturerName,
-        ManufacturerAddress,
+        CompanyAddress,
+        // ManufacturerAddress,
         StoringCondition,
         ActiveIngredients,
         ProductImage,
         Comment,
       });
+
+      setManufacturerAddress(ManufacturerAddress);
+      setProductName(ProductName);
+      setProductBatchNumber(BatchNumber);
 
       toast.success("Packet Information fetched successfully!");
     }
@@ -99,7 +108,8 @@ const VerifyProduct = ({ code }) => {
                           height={100}
                           className="w-24 h-24 object-cover"
                         />
-                      ) : value.includes("github") ? (
+                      ) : value.includes("github") ||
+                        value.includes("amazon") ? (
                         <a
                           href={value}
                           target="_blank"
@@ -119,17 +129,39 @@ const VerifyProduct = ({ code }) => {
               ))}
             </tbody>
           </table>
+          <div className="mt-4 ml-6 mb-4">
+            <h2 className="text-md font-bold">
+              Verify Nafdac Number with following link below
+            </h2>
+            <p className="text-sm font-medium mb-4">
+              Copy and paste Nafdac Number into the input field in the link to
+              confirm product
+            </p>
+            <a
+              className="underline text-blue-500"
+              href="https://www.napams.org/#search-domain"
+            >
+              Verify NafDac Number
+            </a>
+          </div>
+
+          {manufacturerAddress && (
+            <div className="mt-4 mb-4">
+              <ReportIssue
+                address={manufacturerAddress}
+                productName={productName}
+                productBatchNumber={productBatchNumber}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <>
           <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
             <div className="text-center">
-              <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                Product not found
+              <h1 className="mt-4 text-xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                Loading Product Details...
               </h1>
-              <p className="mt-6 text-base leading-7 text-gray-600">
-                Sorry, we couldn’t find the product you’re looking for.
-              </p>
               <div className="mt-10 flex items-center justify-center gap-x-6"></div>
             </div>
           </main>

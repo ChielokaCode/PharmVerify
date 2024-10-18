@@ -17,7 +17,7 @@ const ShowProduct = ({ products }) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   return (
-    <div className="p-4 xl:pl-72 lg:pl-72 md:pl-72 bg-gray-100">
+    <div className="p-4 md:ml-64 ml-0  bg-gray-100">
       <h2 className="text-xl font-bold mb-4">Product Details</h2>
 
       {products.map((productArray, productIndex) => {
@@ -28,6 +28,7 @@ const ShowProduct = ({ products }) => {
           productForm,
           activeIngredients,
           manufacturerName,
+          companyAddress,
           manufacturerAddress,
           dosageStrength,
           packagingType,
@@ -61,7 +62,7 @@ const ShowProduct = ({ products }) => {
                 </tr>
                 <tr>
                   <td className="border px-4 py-2">Manufacturer Address</td>
-                  <td className="border px-4 py-2">{manufacturerAddress}</td>
+                  <td className="border px-4 py-2">{companyAddress}</td>
                 </tr>
                 <tr>
                   <td className="border px-4 py-2">NAFDAC Number</td>
@@ -77,7 +78,7 @@ const ShowProduct = ({ products }) => {
                 </tr>
                 <tr>
                   <td className="border px-4 py-2">Dosage Strength</td>
-                  <td className="border px-4 py-2">{dosageStrength} mg</td>
+                  <td className="border px-4 py-2">{dosageStrength}</td>
                 </tr>
                 <tr>
                   <td className="border px-4 py-2">Packaging Type</td>

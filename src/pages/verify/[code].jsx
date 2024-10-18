@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { Header, VerifyProduct } from "../../Components/index";
+import { Header, ReportIssue, VerifyProduct } from "../../Components/index";
 
 const VerifyPage = () => {
   const router = useRouter();
