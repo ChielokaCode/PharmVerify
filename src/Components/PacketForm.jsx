@@ -80,7 +80,8 @@ const PacketForm = ({ id }) => {
         {
           onSettled(data, error) {
             if (error) {
-              toast.error(`Transaction failed : ${error.cause?.reason}`);
+              toast.error("Transaction failed");
+              console.error("Transaction failed:", error);
             } else {
               toast.success("Batch added successfully!");
               window.location.reload();

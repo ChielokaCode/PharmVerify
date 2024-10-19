@@ -159,10 +159,10 @@ const ViewCodesModal = ({ isOpen, toggleModal, batch }) => {
                     </svg>
                   </span>
                   <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                    Flowbite Library v1.2.2
+                    PharmVerify
                   </h3>
                   <time className="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                    Released on December 2nd, 2021
+                    Released on 2024
                   </time>
                 </li>
               </ol>

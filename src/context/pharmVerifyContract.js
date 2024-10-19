@@ -1,5 +1,5 @@
 export const pharmVerifyContract = {
-  address: "0xaBCe1F721DCb02EDE036696ab407eC539dDF7E11",
+  address: "0xEf2447c06dA14dBBfF18c5Caed8100B29793c433",
   abi: [
     {
       inputs: [{ internalType: "address", name: "_owner", type: "address" }],

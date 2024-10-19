@@ -80,7 +80,8 @@ const ReportIssue = ({ address, productName, productBatchNumber }) => {
         {
           onSettled(data, error) {
             if (error) {
-              toast.error(`Transaction failed : ${error.cause?.reason}`);
+              toast.error("Transaction failed");
+              console.error("Transaction failed:", error);
             } else {
               toast.success("Report Sent Successfully!");
               window.location.reload();

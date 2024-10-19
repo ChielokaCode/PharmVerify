@@ -85,7 +85,8 @@ const AddProduct = () => {
         {
           onSettled(data, error) {
             if (error) {
-              toast.error(`Transaction failed : ${error.cause?.reason}`);
+              toast.error("Transaction failed");
+              console.error("Transaction failed:", error);
             } else {
               toast.success("Product added successfully!");
               setProductName("");

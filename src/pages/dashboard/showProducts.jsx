@@ -33,7 +33,7 @@ const showProducts = () => {
 
     if (result.error) {
       console.error(`${result.error.message}`);
-      toast.error(`Transaction failed: ${result.error.message}`);
+      toast.error("Transaction failed");
     }
   }, [result.data, result.error]);
 

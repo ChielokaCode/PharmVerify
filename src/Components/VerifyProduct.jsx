@@ -135,13 +135,13 @@ const VerifyProduct = ({ code }) => {
             </h2>
             <p className="text-sm font-medium mb-4">
               Copy and paste Nafdac Number into the input field in the link to
-              confirm product
+              confirm product for users in Nigeria
             </p>
             <a
               className="underline text-blue-500"
               href="https://www.napams.org/#search-domain"
             >
-              Verify NafDac Number
+              Verify Nafdac Number
             </a>
           </div>
 

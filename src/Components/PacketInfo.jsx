@@ -38,7 +38,8 @@ const PacketInfo = ({ id }) => {
     }
 
     if (result.error) {
-      toast.error(`Transaction failed: ${result.error.message}`);
+      toast.error("Transaction failed");
+      console.log(result.error);
     }
   }, [result.data, result.error, isConnected]); // Ensure dependencies are set correctly
 
