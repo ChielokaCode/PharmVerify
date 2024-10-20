@@ -1,5 +1,5 @@
 export const pharmVerifyContract = {
-  address: "0xE06d558fe5ab49974556907943871F0171263aF8",
+  address: "0x5a56F899875Af59322252f1a90b4a37Fa0dDe5dc",
   abi: [
     {
       inputs: [{ internalType: "address", name: "_owner", type: "address" }],
@@ -385,40 +385,6 @@ export const pharmVerifyContract = {
           internalType: "struct YourContract.Product[]",
           name: "",
           type: "tuple[]",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "_manufacturerAddress",
-          type: "address",
-        },
-        { internalType: "string", name: "_batchNumber", type: "string" },
-      ],
-      name: "getBatchByBatchNumber",
-      outputs: [
-        {
-          components: [
-            { internalType: "uint256", name: "id", type: "uint256" },
-            {
-              internalType: "string[]",
-              name: "packetUniqueCodes",
-              type: "string[]",
-            },
-            { internalType: "string", name: "batchNumber", type: "string" },
-            { internalType: "uint256", name: "batchQuantity", type: "uint256" },
-            { internalType: "string", name: "productName", type: "string" },
-            { internalType: "uint256", name: "productId", type: "uint256" },
-            { internalType: "string", name: "manufactureDate", type: "string" },
-            { internalType: "string", name: "expirationDate", type: "string" },
-          ],
-          internalType: "struct YourContract.Batch",
-          name: "",
-          type: "tuple",
         },
       ],
       stateMutability: "view",

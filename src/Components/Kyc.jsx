@@ -1,14 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
 import toast from "react-hot-toast";
 import { useAccount, useWriteContract } from "wagmi";
 import { pharmVerifyContract } from "../context/pharmVerifyContract";
 import { parseAbi } from "viem";
 import { useRouter } from "next/router";
-import { useCapabilities, useWriteContracts } from "wagmi/experimental";
-import { config, useWagmiConfig } from "../wagmi";
 
 const Kyc = () => {
   const [manufacturerName, setManufacturerName] = useState("");
@@ -24,16 +22,9 @@ const Kyc = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const [loading, setLoading] = useState(false); // Loading state
-
-  // const wagmiConfig = useWagmiConfig();
+  const [loading, setLoading] = useState(false);
 
   const { writeContractAsync } = useWriteContract();
-  // const [id, setId] = useState(undefined);
-
-  // const { writeContracts } = useWriteContracts({
-  //   mutation: { onSuccess: (id) => setId(id) },
-  // });
 
   const account = useAccount();
   const { isConnected } = useAccount();
@@ -42,6 +33,8 @@ const Kyc = () => {
   ]);
 
   const router = useRouter();
+
+  // Configuration for capabilities
 
   // const { data: availableCapabilities } = useCapabilities({
   //   account: account.address,
@@ -82,7 +75,7 @@ const Kyc = () => {
     }
   };
 
-  // Handle form submission
+  // Handle form submission to register manufacturer
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -137,6 +130,7 @@ const Kyc = () => {
     }
 
     //The below is configuration for smart wallet
+
     // try {
     //   writeContracts(
     //     {
